@@ -233,14 +233,28 @@ int OnHit(int hitter, int victim, int writesocket)
     return 0;
 }
 
-int OnBuy(int id, int wpnid, int writesocket)
+int OnBuyAttempt(int id, int wpnid, int writesocket)
 {
     if(player[id].money - weapons[wpnid].price >= 0)
     {
-        player[id].money -= weapons[wpnid].price;
-        return 0;
+    	int i;
+    	for(i = 0; i <= 99; i++)
+    	{
+    		if(weapons[wpnid].freq != 0) //If unknown everything is 0
+    		{
+    			return 0;
+    		}
+    	}
     }
     return 1;
+}
+
+int OnBuy(int id, int wpnid, int writesocket)
+{
+	player[id].money -= weapons[wpnid].price;
+	player[id].actualweapon = GivePlayerWeapon(id, wpnid);
+	printf("%s bought %s!\n", player[id].name, weapons[wpnid].name);
+    return 0;
 }
 
 int OnKill(int hitter, int victim, int wpnid, int writesocket)

@@ -16,7 +16,6 @@ struct WEAPON
     short ammo1, ammo2;
     char *name;
 };
-struct WEAPON weapons[100];
 
 struct PLAYER_WEAPON
 {

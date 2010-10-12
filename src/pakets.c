@@ -111,9 +111,10 @@ int buy(unsigned char *message, int length, int id, int writesocket)
     wpnid = message[position];
     position++;
 
-    switch(OnBuy(id, wpnid, writesocket))
+    switch(OnBuyAttempt(id, wpnid, writesocket))
     {
         case 0:
+            OnBuy(id, wpnid, writesocket);
             SendBuyMessage(id, wpnid, writesocket);
             break;
         case 1:

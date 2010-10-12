@@ -5,4 +5,6 @@
 void AddWeapon(short id, char name[], short wpndmg, short wpndmg_z1, short wpndmg_z2, short freq, short speed, short slot, short price, short range, short accuracy, short ammo1, short ammo2);
 void WeaponInit();
 
+struct WEAPON weapons[100];
+
 #endif // WEAPONS_H_INCLUDED

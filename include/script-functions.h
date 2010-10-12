@@ -13,7 +13,7 @@ int OnRespawn(int id, int writesocket);
 int OnWeaponChangeAttempt(int id, int wpnid, int writesocket);
 int OnFire(int id, int writesocket);
 int OnHit(int hitter, int victim, int writesocket);
-int OnBuy(int id, int wpnid, int writesocket);
+int OnBuyAttempt(int id, int wpnid, int writesocket);
 int OnKill(int hitter, int victim, int wpnid, int writesocket);
 int OnChatMessage(int id, unsigned char *message, int team, int writesocket);
 int OnTeamChangeAttempt(int id, unsigned char team, unsigned char skin, int writesocket);

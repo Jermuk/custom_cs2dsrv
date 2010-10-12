@@ -83,7 +83,7 @@ void CheckForTimeout(void)
     }
 }
 
-void GivePlayerWeapon(int id, int wpnid)
+int GivePlayerWeapon(int id, int wpnid)
 {
     int i;
     for(i = 0; i <= 9; i++)
@@ -94,7 +94,7 @@ void GivePlayerWeapon(int id, int wpnid)
             player[id].slot[i].slot = weapons[wpnid].slot;
             player[id].slot[i].ammo1 = weapons[wpnid].ammo1;
             player[id].slot[i].ammo2 = weapons[wpnid].ammo2;
-            break;
+            return i;
         }
     }
 }

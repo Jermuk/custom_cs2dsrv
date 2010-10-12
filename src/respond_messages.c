@@ -102,15 +102,21 @@ void SendFireMessage(int id, int writesocket)
 
 void SendBuyMessage(int id, int wpnid, int writesocket)
 {
-    int stringsize = 2;
+    int stringsize = 6;
     unsigned char *buffer = malloc(stringsize);
     if (buffer == NULL) error_exit("Memory error ( SendBuyMessage() )\n");
 
     int position = 0;
 
-    buffer[position] = 7;
+    buffer[position] = 17;
     position++;
     buffer[position] = id;
+    position++;
+    buffer[position] = wpnid;
+    position++;
+    memcpy(buffer+position, player[id].money, 2);
+    position += 2;
+    buffer[position] = 0;
     position++;
 
     //SendToAll(buffer, stringsize, 1, writesocket);

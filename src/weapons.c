@@ -19,6 +19,11 @@ void AddWeapon(short id, char name[], short wpndmg, short wpndmg_z1, short wpndm
 }
 void WeaponInit()
 {
+	int i;
+	for(i = 0; i <= 99; i++)
+	{
+		AddWeapon(i, "Unknown", 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0);
+	}
     AddWeapon(1, "USP"   , 24 , 0, 0, 166 , 1, 2, 500, 300, 0 , 12, 100);
     AddWeapon(2, "Glock" , 21 , 0, 0, 166 , 1, 2, 400, 250, 0 , 20, 120);
     AddWeapon(3, "Deagle", 34 , 0, 0, 100 , 1, 2, 550, 300, 0 , 7 , 35 );
