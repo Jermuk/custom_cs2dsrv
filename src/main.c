@@ -88,11 +88,11 @@ int main()
                             case 14:
                                 rtn = posrotupdatewalk(message, tempsize, id, readsocket);
                                 break;
-                            case 17:
-                                rtn = buy(message, tempsize, id, readsocket);
-                                break;
                             case 20:
                                 rtn = teamchange(message, tempsize, id, readsocket);
+                                break;
+                            case 23:
+                            	rtn = buy(message, tempsize, id, readsocket);
                                 break;
                             case 32:
                                 rtn = specpos(message, tempsize, id, readsocket);
