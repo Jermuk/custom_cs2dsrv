@@ -11,13 +11,13 @@ void myprintf(char *string, ...)
     {
         time(&rawtime);
         timeinfo = localtime(&rawtime);
-        //fprintf(logfile, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+        fprintf(logfile, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
         fprintf(stdout, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
         va_list argzeiger;
         va_start(argzeiger,string);
         vprintf(string,argzeiger);
-        //vfprintf(logfile, string, argzeiger);
+        vfprintf(logfile, string, argzeiger);
         va_end(argzeiger);
 
         fclose(logfile);
@@ -37,7 +37,7 @@ void myprintf2(char *string, ...)
         va_list argzeiger;
         va_start(argzeiger,string);
         vprintf(string,argzeiger);
-        //vfprintf(logfile, string, argzeiger);
+        vfprintf(logfile, string, argzeiger);
         va_end(argzeiger);
 
         fclose(logfile);
