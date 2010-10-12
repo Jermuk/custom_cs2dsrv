@@ -108,20 +108,21 @@ void SendBuyMessage(int id, int wpnid, int writesocket)
 
     int position = 0;
 
-    buffer[position] = 17;
+    buffer[position] = 23;
     position++;
     buffer[position] = id;
     position++;
     buffer[position] = wpnid;
     position++;
-    memcpy(buffer+position, player[id].money, 2);
+    memcpy(buffer+position, &player[id].money, 2);
     position += 2;
     buffer[position] = 0;
     position++;
 
-    //SendToAll(buffer, stringsize, 1, writesocket);
+    SendToAll(buffer, stringsize, 1, writesocket);
 
     free(buffer);
+    printf("Message sent!\n");
 }
 
 void SendHitMessage(int id, int victim, int health, int writesocket)
