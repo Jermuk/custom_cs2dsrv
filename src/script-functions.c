@@ -98,7 +98,7 @@ int OnWeaponChangeAttempt(int id, int wpnid, int writesocket)
         if(player[id].slot[i].id == wpnid)
         {
             player[id].actualweapon = i;
-            printf("%s switched to %s (%d)\n", player[id].name, weapons[player[id].slot[player[id].actualweapon].id].name, player[id].slot[player[id].actualweapon].ammo1);
+            printf("%s switched to %s\n", player[id].name, weapons[player[id].slot[player[id].actualweapon].id].name);
             return 0;
         }
     }
@@ -112,6 +112,7 @@ Return Values:
 */
 int OnFire(int id, int writesocket)
 {
+	//printf("%s tried to shoot!\n", player[id].name);
     short *ammo1 = &player[id].slot[player[id].actualweapon].ammo1;
     if(*ammo1 <= 0 && *ammo1 != -1)
     {
@@ -223,7 +224,7 @@ int OnHit(int hitter, int victim, int writesocket)
     {
         player[victim].health -= damage;
         SendHitMessage(victim, hitter, player[victim].health, writesocket);
-        //printf("%s hitted %s with %s\n", player[hitter].name, player[victim].name, weapons[wpnid].name);
+        printf("%s hitted %s with %s\n", player[hitter].name, player[victim].name, weapons[wpnid].name);
     }
     else
     {
@@ -252,7 +253,7 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 int OnBuy(int id, int wpnid, int writesocket)
 {
 	player[id].money -= weapons[wpnid].price;
-	player[id].actualweapon = GivePlayerWeapon(id, wpnid);
+	player[id].actualweapon = GivePlayerWeapon(id, wpnid); //Return slot
 	printf("%s bought %s!\n", player[id].name, weapons[wpnid].name);
     return 0;
 }

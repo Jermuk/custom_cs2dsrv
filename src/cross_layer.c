@@ -1,5 +1,9 @@
 #include "../include/cross_layer.h"
-
+/**
+ * \fn int create_socket(void)
+ * \brief creates a socket
+ * \return socketnumber or 0 if failed
+ */
 int create_socket(void)
 {
 #ifdef _WIN32
@@ -33,6 +37,13 @@ int create_socket(void)
     return 0;
 }
 
+/**
+ * \fn int bind_socket(int *sock, unsigned long adress, unsigned short port)
+ * \brief bind a socket to a specific IP and port
+ * \param *sock socket to bind
+ * \param adress ip-address to bind
+ * \param port port to bind
+ */
 void bind_socket(int *sock, unsigned long adress, unsigned short port)
 {
 #ifdef _WIN32
@@ -59,6 +70,11 @@ void bind_socket(int *sock, unsigned long adress, unsigned short port)
 #endif
 }
 
+/**
+ * \fn int error_exit(char *message)
+ * \brief Show a error message and exit the programm
+ * \param *message message to display
+ */
 void error_exit(char *message)
 {
     printf("%s", message);
@@ -73,6 +89,10 @@ void error_exit(char *message)
     exit(EXIT_FAILURE);
 }
 
+/**
+ * \fn cleanup(void)
+ * \brief clean the socket
+ */
 void cleanup(void)
 {
     OnExit();
@@ -83,20 +103,31 @@ void cleanup(void)
 #endif
 }
 
+/**
+ * \fn mtime(void)
+ * \brief return the actually time in miliseconds for win and linux
+ * \return time in ms
+ */
+
+int mtime(void)
+{
 #ifdef _WIN32
-int mtime(void)
-{
-    return GetTickCount();
-}
+	return GetTickCount();
 #else
-int mtime(void)
-{
     struct timeval tv;
     gettimeofday(&tv,NULL);
     return (int)(tv.tv_sec*1000 + (tv.tv_usec / 1000));
-}
 #endif
+}
 
+/**
+ * \fn void udp_send(int socket, unsigned char *data, int length, struct sockaddr_in *client)
+ * \brief send a message over a specific socket to a client
+ * \param *socket socket to send over
+ * \param *data data to send
+ * \param length size of *data
+ * \param *client sockaddr_in struct to send data to
+ */
 void udp_send(int socket, unsigned char *data, int length, struct sockaddr_in *client)
 {
     int rc;
@@ -123,6 +154,15 @@ void udp_send(int socket, unsigned char *data, int length, struct sockaddr_in *c
     //printf("Message sent!\n");
 }
 
+/**
+ * \fn int udp_recieve(int socket, unsigned char *data, int length, struct sockaddr_in *client)
+ * \brief Recieves a message on a specicific socket and save (if something recieved) the data
+ * \param socket socket to recieve
+ * \param *data pointer where the data should be saved
+ * \param length max length of *data
+ * \param *client pointer where the clientdata (ip, ...) should be saved
+ * \return length of read data
+ */
 int udp_recieve(int socket, unsigned char *data, int length, struct sockaddr_in *client)
 {
     struct sockaddr_in newclient;

@@ -1,5 +1,12 @@
 #include "../include/functions.h"
 
+/**
+ * \fn int IsPlayerKnown(struct in_addr ip, u_short port)
+ * \brief checks if a player is already known
+ * \param ip client's ip
+ * \param port client's port
+ * \return the playerid or 0 if not found
+ */
 int IsPlayerKnown(struct in_addr ip, u_short port)
 {
     int i;
@@ -13,6 +20,10 @@ int IsPlayerKnown(struct in_addr ip, u_short port)
     return -1;
 }
 
+/**
+ * \fn void ClearPlayer(int id)
+ * \brief clear all player variables
+ */
 void ClearPlayer(int id)
 {
     player[id].used = 0;
@@ -61,6 +72,10 @@ void ClearPlayer(int id)
     //player[id].ip = "";
 }
 
+/**
+ * \fn void ClearAllPlayer(void)
+ * \brief clear all player variables
+ */
 void ClearAllPlayer(void)
 {
     int i;
@@ -70,6 +85,10 @@ void ClearAllPlayer(void)
     }
 }
 
+/**
+ * \fn void CheckForTimeout(void)
+ * \brief check all player for timeout
+ */
 void CheckForTimeout(void)
 {
     int i;
@@ -82,7 +101,13 @@ void CheckForTimeout(void)
         }
     }
 }
-
+/**
+ * \fn int GivePlayerWeapon(int id, int wpnid)
+ * \brief adds an specific weapon to a player
+ * \param id player-id
+ * \param wpnid weapon-id
+ * \return the slot-id or 0 if not found
+ */
 int GivePlayerWeapon(int id, int wpnid)
 {
     int i;
@@ -97,8 +122,14 @@ int GivePlayerWeapon(int id, int wpnid)
             return i;
         }
     }
+    return 0;
 }
-
+/**
+ * \fn void RemovePlayerWeapon(int id, int wpnid)
+ * \brief removes an specific weapon to a player
+ * \param id player-id
+ * \param wpnid weapon-id
+ */
 void RemovePlayerWeapon(int id, int wpnid)
 {
     int i;
@@ -114,7 +145,11 @@ void RemovePlayerWeapon(int id, int wpnid)
         }
     }
 }
-
+/**
+ * \fn void RemoveAllPlayerWeapon(int id)
+ * \brief remove all weapons from a player
+ * \param id player-id
+ */
 void RemoveAllPlayerWeapon(int id)
 {
     int i;
@@ -127,6 +162,15 @@ void RemoveAllPlayerWeapon(int id)
     }
 }
 
+/**
+ * \fn int PlayerTimeout(int id)
+ * \brief checks if a specific player is timeout
+ * \param id player-id
+ * \return 1 - timeout; 0 - success
+ * \note still not working
+ *
+ * TODO Still not working
+ */
 int PlayerTimeout(int id)
 {
     id = 0;
@@ -144,8 +188,12 @@ int PlayerTimeout(int id)
 }
 
 
-
-unsigned short GetServerStatus(void) //
+/**
+ * \fn unsigned short GetServerStatus(void)
+ * \brief needs for serverlist
+ * \return serverstatus
+ */
+unsigned short GetServerStatus(void)
 {
     unsigned short serverstatus = 0;
     if(strcmp(sv_password, ""))
@@ -183,14 +231,24 @@ unsigned short GetServerStatus(void) //
     return serverstatus;
 }
 
-
+/**
+ * \fn unsigned short endian_swap_short(unsigned short *x)
+ * \brief swap the endian for a short
+ * \param *x pointer to an unsigned short
+ * \return the endian-changed unsigned short
+ */
 unsigned short endian_swap_short(unsigned short *x)
 {
     *x = (*x>>8) |
          (*x<<8);
     return *x;
 }
-
+/**
+ * \fn unsigned int endian_swap_int(unsigned int *x)
+ * \brief swap the endian for an int
+ * \param *x pointer to an int
+ * \return the endian-changed int
+ */
 unsigned int endian_swap_int(unsigned int *x)
 {
     *x = (*x>>24) |
@@ -200,7 +258,13 @@ unsigned int endian_swap_int(unsigned int *x)
     return *x;
 }
 
-
+/**
+ * \fn int ValidatePaket(char *message, int id)
+ * \brief validate if the first two bytes follow the numbering for a player and rise them if necessary
+ * \param *message pointer to the message
+ * \param id player-id
+ * \return 0 if invalid; 1 if valid
+ */
 int ValidatePaket(char *message, int id)
 {
     unsigned short *pTempNummer = malloc(sizeof(unsigned short));
@@ -227,7 +291,12 @@ int ValidatePaket(char *message, int id)
     free(pTempNummer);
     return 1;
 }
-
+/**
+ * \fn void PaketConfirmation(char *message, int id, int writesocket)
+ * \brief sends an confirmation to a player if necessary
+ * \param *message pointer to the message
+ * \param id player-id
+ */
 void PaketConfirmation(char *message, int id, int writesocket)
 {
     unsigned short *pTempNummer = malloc(sizeof(unsigned short));
@@ -246,7 +315,12 @@ void PaketConfirmation(char *message, int id, int writesocket)
     }
     free(pTempNummer);
 }
-
+/**
+ * \fn int CheckPlayerData(char *password)
+ * \brief check all player data and looks if he/she can join
+ * \param *password pointer to the password
+ * \return the error number or 0
+ */
 int CheckPlayerData(char *password)
 {
     if(strcmp(sv_password, password) != 0)
@@ -271,7 +345,7 @@ int CheckPlayerData(char *password)
             8 - ??
             9 - Connection already exists
             10 - Wrong client (pre_authcode)
-            11 - Diffrent map (temp, etc.)
+            11 - Different map (temp, etc.)
             12 - Map unknown (maptransfer disabled)
             13++ - Failed to join
             */
@@ -279,6 +353,13 @@ int CheckPlayerData(char *password)
     return 0;
 }
 
+/**
+ * \fn unsigned char *GetEncodedString(unsigned char *string, int length)
+ * \brief convert the playername into cs2d format
+ * \param *string playername
+ * \param length length from playername
+ * \return the converted name
+ */
 unsigned char *GetEncodedString(unsigned char *string, int length)
 {
     unsigned char *buffer = malloc(length+1); //+1 need for \0

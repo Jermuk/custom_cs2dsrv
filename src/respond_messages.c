@@ -119,10 +119,11 @@ void SendBuyMessage(int id, int wpnid, int writesocket)
     buffer[position] = 0;
     position++;
 
-    SendToAll(buffer, stringsize, 1, writesocket);
+    SendToPlayer(buffer, stringsize, id, 1, writesocket);
 
     free(buffer);
-    printf("Message sent!\n");
+
+    SendWeaponChangeMessage(id, wpnid, writesocket);
 }
 
 void SendHitMessage(int id, int victim, int health, int writesocket)
