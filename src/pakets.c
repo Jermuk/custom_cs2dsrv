@@ -1444,3 +1444,27 @@ int leave(int id, int writesocket)
 
     return 2;
 }
+
+int reload(unsigned char *message, int length, int id, int writesocket)
+{
+    int paketlength = 2;
+    if(length < paketlength)
+    {
+        printf("Invalid packet (buy)!\n");
+        return length;
+    }
+
+    int position = 1;
+    int status;
+
+    status = message[position];
+    position++;
+
+    if(status == 1)
+    {
+        SendReloadMessage(id, 1, writesocket);
+        player[id].reloading = player[id].actualweapon;
+        player[id].reloadtimer = mtime()+weapons[player[id].slot[player[id].actualweapon].id].reloadtime;
+    }
+    return paketlength;
+}

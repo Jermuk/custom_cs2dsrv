@@ -98,6 +98,9 @@ int OnWeaponChangeAttempt(int id, int wpnid, int writesocket)
         if(player[id].slot[i].id == wpnid)
         {
             player[id].actualweapon = i;
+            player[id].zoommode = 0; //CHANGE there are also silencer, ...
+            player[id].reloading = 0;
+
             printf("%s switched to %s\n", player[id].name, weapons[player[id].slot[player[id].actualweapon].id].name);
             return 0;
         }
@@ -126,6 +129,7 @@ int OnFire(int id, int writesocket)
             *ammo1 = *ammo1-1;
         }
     }
+    // TODO Firetimer does not work
 /*
     int temptime = mtime();
     printf("Temptime: %d; Firetimer: %d\n", temptime, player[id].firetimer);
@@ -262,6 +266,9 @@ int OnKill(int hitter, int victim, int wpnid, int writesocket)
 {
     player[victim].health = 0;
     player[victim].dead = 1;
+    player[hitter].score++;
+    player[hitter].kills++;
+    player[victim].deaths++;
     RemoveAllPlayerWeapon(victim);
     SendHitMessage(victim, hitter, player[victim].health, writesocket);
     printf("%s killed %s with %s\n", player[hitter].name, player[victim].name, weapons[wpnid].name);

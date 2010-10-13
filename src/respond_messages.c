@@ -490,3 +490,23 @@ void PingAllPlayer(int writesocket)
         }
     }
 }
+
+void SendReloadMessage(int id, int status, int writesocket)
+{
+    int stringsize = 3;
+    unsigned char *buffer = malloc(stringsize);
+    if (buffer == NULL) error_exit("Memory error ( SendJoinMessage() )\n");
+
+    int position = 0;
+
+    buffer[position] = 16;
+    position++;
+    buffer[position] = id;
+    position++;
+    buffer[position] = status;
+    position++;
+
+
+    SendToAll(buffer, stringsize, 1, writesocket);
+    free(buffer);
+}

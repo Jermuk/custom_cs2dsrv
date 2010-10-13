@@ -17,6 +17,7 @@ int ValidatePaket(char *message, int id);
 void PaketConfirmation(char *message, int id, int writesocket);
 int CheckPlayerData(char *password);
 unsigned char *GetEncodedString(unsigned char *string, int length);
+void CheckAllPlayerForReload(int writesocket);
 
 extern time_t firsttime;
 

@@ -28,6 +28,7 @@ int main()
 
         CheckForTimeout();
         PingAllPlayer(readsocket);
+        CheckAllPlayerForReload(readsocket);
 
         select(readsocket+1, &descriptor, NULL, NULL, NULL);
 
@@ -87,6 +88,9 @@ int main()
                                 break;
                             case 14:
                                 rtn = posrotupdatewalk(message, tempsize, id, readsocket);
+                                break;
+                            case 16:
+                            	rtn = reload(message, tempsize, id, readsocket);
                                 break;
                             case 20:
                                 rtn = teamchange(message, tempsize, id, readsocket);

@@ -53,6 +53,8 @@ void ClearPlayer(int id)
     player[id].armor = 0;
 
     player[id].actualweapon = 0;
+    player[id].reloading = 0;
+    player[id].reloadtimer = 0;
 
     int i;
     for(i = 0; i <= 9; i++)
@@ -169,7 +171,7 @@ void RemoveAllPlayerWeapon(int id)
  * \return 1 - timeout; 0 - success
  * \note still not working
  *
- * TODO Still not working
+ * TODO PlayerTimeout is still not working
  */
 int PlayerTimeout(int id)
 {
@@ -386,3 +388,32 @@ unsigned char *GetEncodedString(unsigned char *string, int length)
     return buffer;
 }
 
+/**
+ * \fn void CheckAllPlayerForReload(void)
+ * \brief check all player if their reload is ended
+ * ,send message if necessary, and rise their magazine
+ */
+void CheckAllPlayerForReload(int writesocket)
+{
+	int i;
+	for(i = 1; i <= sv_maxplayers; i++)
+	{
+		if(player[i].reloading != 0)
+		{
+			if(player[i].reloadtimer >= mtime())
+			{
+				SendReloadMessage(i, 2, writesocket);
+				if(player[i].slot[player[i].reloading].ammo2 -= player[i].slot[player[i].reloading].ammo1 > 0)
+				{
+					player[i].slot[player[i].reloading].ammo2 -= player[i].slot[player[i].reloading].ammo1;
+					player[i].slot[player[i].reloading].ammo1 = weapons[player[i].slot[player[i].reloading].id].ammo1;
+				}
+				else
+				{
+					player[i].slot[player[i].reloading].ammo1 = player[i].slot[player[i].reloading].ammo2;
+				}
+				player[i].reloading = 0;
+			}
+		}
+	}
+}

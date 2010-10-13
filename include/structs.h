@@ -46,6 +46,8 @@ struct PLAYER
     float rotation; //-180 to +180
     int specposx, specposy;
     unsigned short money;
+    unsigned short kills;
+    int reloadtimer, reloading;
 
     short dead;
 
