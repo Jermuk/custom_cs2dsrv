@@ -264,6 +264,22 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
     					}
     				}
     			}
+    			else if(player[id].team == 2)
+    			{
+    				int b;
+    				for(b = 0; b <= ctspawncount; b++)
+    				{
+						int playerx = player[id].x;
+						int playery = player[id].y;
+						int tempx = ctspawnx[b]*32;
+						int tempy = ctspawny[b]*32;
+						//If player in buyzone (5*5)
+						if(playerx >= tempx-64 && playerx <= tempx+64 && playery >= tempy-64 && playery <= tempy+64)
+						{
+							return 0;
+						}
+    				}
+    			}
     		}
     	}
     }
