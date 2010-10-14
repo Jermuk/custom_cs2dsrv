@@ -26,7 +26,7 @@ int main()
     while(1)
     {
 
-        CheckForTimeout();
+        CheckForTimeout(readsocket);
         PingAllPlayer(readsocket);
         CheckAllPlayerForReload(readsocket);
 

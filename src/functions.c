@@ -88,17 +88,18 @@ void ClearAllPlayer(void)
 }
 
 /**
- * \fn void CheckForTimeout(void)
+ * \fn void CheckForTimeout(int writesocket)
  * \brief check all player for timeout
  */
-void CheckForTimeout(void)
+void CheckForTimeout(int writesocket)
 {
     int i;
     for (i = 1; i <= sv_maxplayers; i++)
     {
-        if (PlayerTimeout(i))
+        if (player[i].used == 1 && PlayerTimeout(i))
         {
             printf("Client %d timed out!\n", i);
+            SendLeaveMessage(i, writesocket);
             ClearPlayer(i);
         }
     }
@@ -175,17 +176,15 @@ void RemoveAllPlayerWeapon(int id)
  */
 int PlayerTimeout(int id)
 {
-    id = 0;
-    /*
+    //id = 0;
+
     time_t actualtime;
     time(&actualtime);
 
-    if(((player[id].lastpaket + TIMEOUT) > actualtime) && player[id].lastpaket != 0)
+    if(((player[id].lastpaket + TIMEOUT) < actualtime) && player[id].lastpaket != 0)
     {
-        printf("POSITIV!\n");
         return 1;
     }
-    */
     return 0;
 }
 

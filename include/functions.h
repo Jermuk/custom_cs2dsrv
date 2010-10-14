@@ -5,7 +5,7 @@
 int IsPlayerKnown(struct in_addr ip, u_short port);
 void ClearPlayer(int id);
 void ClearAllPlayer(void);
-void CheckForTimeout(void);
+void CheckForTimeout(int writesocket);
 int GivePlayerWeapon(int id, int wpnid);
 void RemovePlayerWeapon(int id, int wpnid);
 void RemoveAllPlayerWeapon(int id);

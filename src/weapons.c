@@ -39,7 +39,6 @@ void WeaponInit()
     AddWeapon(5, "Elite" , 22 , 0, 0, 187 , 1, 2,1000, 300, 0 , 13, 120, 1000);
     AddWeapon(6, "Five-Seven" , 21 , 0, 0, 187 , 1, 2,750 , 300, 0 , 20, 100, 2000);
     AddWeapon(50, "Knife", 100, 0, 0, 1   , 1, 2, 0  , 8  , 0 , -1, -1 , 0);
-    //FIXME finish reload
 }
 
 
