@@ -400,7 +400,7 @@ void CheckAllPlayerForReload(int writesocket)
 	{
 		if(player[i].reloading != 0)
 		{
-			if(player[i].reloadtimer >= mtime())
+			if(player[i].reloadtimer <= mtime())
 			{
 				SendReloadMessage(i, 2, writesocket);
 				if(player[i].slot[player[i].reloading].ammo2 -= player[i].slot[player[i].reloading].ammo1 > 0)

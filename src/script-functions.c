@@ -245,9 +245,25 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
     	int i;
     	for(i = 0; i <= 99; i++)
     	{
-    		if(weapons[wpnid].freq != 0) //If unknown everything is 0
+    		if(weapons[wpnid].freq != 0) //If weapon unknown -> everything is 0
     		{
-    			return 0;
+    			//Check if in buyzone
+    			if(player[id].team == 1)
+    			{
+    				int b;
+    				for(b = 0; b <= tspawncount; b++)
+    				{
+    					int playerx = player[id].x;
+    					int playery = player[id].y;
+    					int tempx = tspawnx[b]*32;
+    					int tempy = tspawny[b]*32;
+    					//If player in buyzone (5*5)
+    					if(playerx >= tempx-64 && playerx <= tempx+64 && playery >= tempy-64 && playery <= tempy+64)
+    					{
+    						return 0;
+    					}
+    				}
+    			}
     		}
     	}
     }
