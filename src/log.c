@@ -2,6 +2,7 @@
 
 void myprintf(char *string, ...)
 {
+#ifdef _WIN32
     FILE *logfile;
     time_t rawtime;
     struct tm * timeinfo;
@@ -11,13 +12,13 @@ void myprintf(char *string, ...)
     {
         time(&rawtime);
         timeinfo = localtime(&rawtime);
-        fprintf(logfile, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+        //fprintf(logfile, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
         fprintf(stdout, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
         va_list argzeiger;
         va_start(argzeiger,string);
         vprintf(string,argzeiger);
-        vfprintf(logfile, string, argzeiger);
+        //vfprintf(logfile, string, argzeiger);
         va_end(argzeiger);
 
         fclose(logfile);
@@ -26,10 +27,23 @@ void myprintf(char *string, ...)
     {
         printf("Cannot open logfile!\n");
     }
+#else
+    time_t rawtime;
+    struct tm * timeinfo;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    fprintf(stdout, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+
+    va_list argzeiger;
+    va_start(argzeiger,string);
+    vprintf(string,argzeiger);
+    va_end(argzeiger);
+#endif
 }
 
 void myprintf2(char *string, ...)
 {
+#ifdef _WIN32
     FILE *logfile;
     logfile = fopen("log.txt","a+");
     if(logfile != NULL)
@@ -46,4 +60,10 @@ void myprintf2(char *string, ...)
     {
         printf("Cannot open logfile!\n");
     }
+#else
+    va_list argzeiger;
+    va_start(argzeiger,string);
+    vprintf(string,argzeiger);
+    va_end(argzeiger);
+#endif
 }

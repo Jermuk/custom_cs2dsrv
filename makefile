@@ -1,0 +1,2 @@
+all:
+	gcc -lm src/cross_layer.c src/main.c src/respond_messages.c src/settings.c src/functions.c src/map.c src/script-functions.c src/weapons.c src/log.c src/pakets.c src/sendto_functions.c -o custom_cs2dsrv
