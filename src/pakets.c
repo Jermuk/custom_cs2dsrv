@@ -11,7 +11,7 @@ int unknown(unsigned char *message, int length, unsigned char *buffer, int size,
         eprintf("%d-", buffer[i]);
     }
     eprintf("\n\t");
-    for(i = 0; i <= length; i++)
+    for(i = 0; i <= length-1; i++)
     {
         eprintf("%d-", message[i]);
     }
@@ -501,7 +501,7 @@ int joinroutine_unknown(unsigned char *message, int length, struct sockaddr_in *
         paketlength = 2;
 
         int i;
-        for (i = 1; i <= MAX_CLIENTS; i++)
+        for (i = 1; i <= MAX_CLIENTS-1; i++)
         {
             if (player[i].used != 1)
             {

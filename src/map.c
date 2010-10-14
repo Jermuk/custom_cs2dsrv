@@ -35,18 +35,18 @@ void ReadMap()
     unsigned char blue = ReadByte(file);
     unsigned char *mapcheck = ReadLine(file);
     //-----------------------------------------
-    unsigned char *tilemode = malloc(loaded);
+    unsigned char *tilemode = malloc(loaded+1);
     if(tilemode == NULL) error_exit("Memory error in ReadMap()\n");
     for(i = 0; i <= loaded; i++)
     {
         tilemode[i] = ReadByte(file);
     }
 
-    map = malloc(maxx * sizeof(struct TILE *));
+    map = malloc(maxx+1 * sizeof(struct TILE *));
     if(map == NULL) error_exit("Memory error in ReadMap()\n");
     for(i = 0; i <= maxx; i++)
     {
-        map[i] = malloc(maxy * sizeof(struct TILE *));
+        map[i] = malloc(maxy+1 * sizeof(struct TILE *));
         if(map[i] == NULL) error_exit("Memory error in ReadMap()\n");
         int b;
         for(b = 0; b <= maxy; b++)

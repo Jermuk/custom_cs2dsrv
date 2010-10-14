@@ -368,7 +368,7 @@ unsigned char *GetEncodedString(unsigned char *string, int length)
     if (buffer == NULL) error_exit("Memory error ( GetEncodedString() )\n");
 
     int i;
-    for (i = 0; i <= length; i++)
+    for (i = 0; i <= length; i++) //length and not length-1 because malloc(length+1)
     {
         if ((i % 3) == 0)
         {
