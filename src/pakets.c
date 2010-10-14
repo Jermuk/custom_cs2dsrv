@@ -727,10 +727,11 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
             if (player[id].usgn == NULL) error_exit("Memory error ( joinroutine_known() )\n");
             memcpy(player[id].usgn, message+position, 2); //sizeof(unsigned short) == 2
             position += 4; //2 bytes + 2 null bytes
-#ifdef LITTLE_ENDIAN
+/*
 #else
             *player[id].usgn = endian_swap_short(player[id].usgn);
 #endif
+*/
             //printf("\tUSGN-ID: %u\n", *player[id].usgn);
 
 

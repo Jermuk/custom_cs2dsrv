@@ -7,7 +7,6 @@
 #define LOCAL_PORT 1994
 #define MAX_CLIENTS 64
 #define TIMEOUT 10
-#define LITTLE_ENDIAN
 
 extern unsigned char pre_authcode[];
 
