@@ -110,8 +110,7 @@ int main()
 								rtn = buy(message, tempsize, id, readsocket);
 								break;
 							case 32:
-								rtn
-										= specpos(message, tempsize, id,
+								rtn = specpos(message, tempsize, id,
 												readsocket);
 								break;
 							case 39:

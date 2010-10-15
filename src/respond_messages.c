@@ -458,6 +458,7 @@ void PingAllPlayer(int writesocket)
     if(actualtime >= (firsttime + 5))
     {
         firsttime = actualtime;
+        //SendPingList(writesocket);
         int i;
         for(i = 1; i <= sv_maxplayers; i++)
         {
@@ -495,7 +496,7 @@ void SendReloadMessage(int id, int status, int writesocket)
 {
     int stringsize = 3;
     unsigned char *buffer = malloc(stringsize);
-    if (buffer == NULL) error_exit("Memory error ( SendJoinMessage() )\n");
+    if (buffer == NULL) error_exit("Memory error ( SendReloadMessage() )\n");
 
     int position = 0;
 
@@ -509,4 +510,64 @@ void SendReloadMessage(int id, int status, int writesocket)
 
     SendToAll(buffer, stringsize, 1, writesocket);
     free(buffer);
+}
+//FIXME complete SendKillMessage
+void SendKillMessage(int id, int writesocket)
+{
+
+	/*
+    int stringsize = 3;
+    unsigned char *buffer = malloc(stringsize);
+    if (buffer == NULL) error_exit("Memory error ( SendKillMessage() )\n");
+
+    int position = 0;
+
+    buffer[position] = 16;
+    position++;
+    buffer[position] = hitter;
+    position++;
+    buffer[position] = victim;
+    position++;
+    buffer[position] = wpnid;
+    position++;
+
+
+    SendToAll(buffer, stringsize, 1, writesocket);
+    free(buffer);
+    */
+}
+
+void SendPingList(int writesocket)
+{
+	int count = onlineplayer;
+	int stringsize = 2 + count*3;
+	unsigned char *buffer = malloc(stringsize);
+	if (buffer == NULL) error_exit("Memory error ( SendPingList() )\n");
+
+	int position = 0;
+
+	buffer[position] = 247;
+	position++;
+	buffer[position] = count;
+	position++;
+	int i;
+	for(i = 1; i<= sv_maxplayers; i++)
+	{
+		if(player[i].used == 1 && player[i].joinstatus >= 4)
+		{
+			buffer[position] = i;
+			position++;
+			memcpy(buffer+position, &player[i].latency, 2);
+			position += 2;
+			/*
+			buffer[position] = player[i].latency;
+			position++;
+			buffer[position] = 0;
+			position++;
+			*/
+		}
+	}
+
+	SendToAll(buffer, stringsize, 0, writesocket);
+	free(buffer);
 }

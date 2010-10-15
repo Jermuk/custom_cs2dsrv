@@ -18,5 +18,6 @@ void SendChatMessage(int id, unsigned char *message, int team, int writesocket);
 void SendTeamChangeMessage(int id, unsigned char team, unsigned char skin, int writesocket);
 void PingAllPlayer(int writesocket);
 void SendReloadMessage(int id, int status, int writesocket);
+void SendPingList(int writesocket);
 
 #endif // RESPOND_MESSAGES_H_INCLUDED

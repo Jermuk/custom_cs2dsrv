@@ -51,6 +51,7 @@ int ping_ingame(unsigned char *message, int length, int id, int writesocket)
         return length;
     }
     player[id].latency = mtime() - player[id].start;
+    printf("%s: %d\n", player[id].name, player[id].latency);
     return paketlength;
 }
 
