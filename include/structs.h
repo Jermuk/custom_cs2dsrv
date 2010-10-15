@@ -52,7 +52,7 @@ struct PLAYER
     short dead;
 
     int start;
-    int latency;
+    unsigned short latency;
 
     int firetimer;
     int zoommode;
