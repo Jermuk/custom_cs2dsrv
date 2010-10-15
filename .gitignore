@@ -1,0 +1,9 @@
+html
+Debug
+.settings
+.cproject
+.project
+doxygen.Doxyfile
+*.txt
+Release/src
+*.map
