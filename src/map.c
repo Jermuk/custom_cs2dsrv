@@ -1,5 +1,10 @@
 #include "../include/map.h"
 
+/**
+ * \fn void ReadMap()
+ * \brief reads the map and put all needed information into a variable
+ * needed: tspawn and ctspawn
+ */
 void ReadMap()
 {
 	FILE *file;
@@ -123,6 +128,12 @@ void ReadMap()
 	free(mapcheck);
 }
 
+/**
+ * \fn unsigned char *ReadLine(FILE *file)
+ * \brief read from a file stream a cs2d line (ends with \r\n; windows end)
+ * \param *file the file stream
+ * \return a pointer to the read line
+ */
 unsigned char *ReadLine(FILE *file)
 {
 	int position = 0;
@@ -153,6 +164,12 @@ unsigned char *ReadLine(FILE *file)
 	return line;
 }
 
+/**
+ * \fn unsigned char ReadByte(FILE *file)
+ * \brief read from a file stream a byte
+ * \param *file the file stream
+ * \return the read byte
+ */
 unsigned char ReadByte(FILE *file)
 {
 	unsigned char byte = fgetc(file);
@@ -160,7 +177,12 @@ unsigned char ReadByte(FILE *file)
 		error_exit("EndOfFile in ReadByte()\n");
 	return byte;
 }
-
+/**
+ * \fn int ReadInt(FILE *file)
+ * \brief read from a file stream a integer
+ * \param *file the file stream
+ * \return the read integer
+ */
 int ReadInt(FILE *file)
 {
 	unsigned char byte1 = fgetc(file);

@@ -1,5 +1,11 @@
 #include "../include/log.h"
 
+/**
+ * \fn void myprintf(char *string, ...)
+ * \brief prints string with time to stdout and logfile
+ * \param *string the string to print out (same syntax as printf)
+ * \param ... the other parameters, if necessary
+ */
 void myprintf(char *string, ...)
 {
 #ifdef _WIN32
@@ -41,6 +47,12 @@ void myprintf(char *string, ...)
 #endif
 }
 
+/**
+ * \fn void myprintf2(char *string, ...)
+ * \brief same as myprintf, just with the difference, that the time won't be printed
+ * \param *string the string to print out (same syntax as printf)
+ * \param ... the other parameters, if necessary
+ */
 void myprintf2(char *string, ...)
 {
 #ifdef _WIN32

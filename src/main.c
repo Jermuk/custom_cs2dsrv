@@ -1,9 +1,16 @@
 #include "../include/main.h"
 
-time_t firsttime;
 
+/**
+ * \fn int main()
+ * \brief initialize sockets and if a message was recieved, give it to the right function.
+ * \return EXIT_SUCCESS or EXIT_FAILURE
+ */
 int main()
 {
+	/**
+	 * Initalize variables, weapons, players and sockets
+	 */
 	int readsocket;
 	struct sockaddr_in newclient;
 	unsigned char buffer[MAX_BUF];
@@ -22,12 +29,16 @@ int main()
 
 	OnServerStart();
 	ReadMap();
+
+	/**
+	 * \var needed for PingAllPlayer() to execute it every 5 sec
+	*/
+	time_t firsttime;
 	time(&firsttime);
 	while (1)
 	{
-
 		CheckForTimeout(readsocket);
-		PingAllPlayer(readsocket);
+		PingAllPlayer(readsocket, firsttime); /// also execute PingList()
 		CheckAllPlayerForReload(readsocket);
 
 		select(readsocket + 1, &descriptor, NULL, NULL, NULL);
@@ -43,15 +54,20 @@ int main()
 			}
 			else
 			{
-				int id = IsPlayerKnown(newclient.sin_addr, newclient.sin_port);
-				if (id != -1)
+				int id = IsPlayerKnown(newclient.sin_addr, newclient.sin_port); /// Function returns id or -1 if unknown
+				if (id != -1)///When the player is known execute other commands as when the player is unknown
 				{
-					if (ValidatePaket(buffer, id))
+					if (ValidatePaket(buffer, id)) ///Checks and raise the packet numbering if necessary
 					{
-						PaketConfirmation(buffer, id, readsocket);
+						PaketConfirmation(buffer, id, readsocket); ///If the numbering is even, send a confirmation
 						time(&player[id].lastpaket);
 						int control = 1;
 						int position = 2;
+						/**
+						 * This while construct splits the recieved UDP-message
+						 * into cs2d-messages.
+						 * Every packet function returns the count of read bytes.
+						 */
 						while (control)
 						{
 							int tempsize = size - position;
@@ -147,6 +163,9 @@ int main()
 								free(message);
 								break;
 							}
+							/**
+							 * Security check (Buffer Overflow)
+							*/
 							else if (position > size)
 							{
 								printf("Error while reading packet: position(%d) > size(%d)\n", position, size);
@@ -203,6 +222,9 @@ int main()
 							free(message);
 							break;
 						}
+						/**
+						 * Security check (Buffer Overflow)
+						*/
 						else if (position > size)
 						{
 							printf("Error while reading packet: position(%d) > size(%d)\n", position, size);
@@ -215,5 +237,5 @@ int main()
 
 		}
 	}
-	return 0;
+	return EXIT_SUCCESS;
 }

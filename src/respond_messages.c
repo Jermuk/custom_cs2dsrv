@@ -451,14 +451,14 @@ void SendTeamChangeMessage(int id, unsigned char team, unsigned char skin, int w
     free(buffer);
 }
 
-void PingAllPlayer(int writesocket)
+void PingAllPlayer(int writesocket, time_t firsttime)
 {
     time_t actualtime;
     time(&actualtime);
     if(actualtime >= (firsttime + 5))
     {
         firsttime = actualtime;
-        //SendPingList(writesocket);
+        SendPingList(writesocket);
         int i;
         for(i = 1; i <= sv_maxplayers; i++)
         {

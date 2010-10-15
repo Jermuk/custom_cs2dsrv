@@ -38,5 +38,7 @@
 #include "script-functions.h"
 #include "map.h"
 
+int main();
+
 
 #endif // MAIN_H_INCLUDED

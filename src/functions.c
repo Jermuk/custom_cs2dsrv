@@ -170,9 +170,7 @@ void RemoveAllPlayerWeapon(int id)
  * \brief checks if a specific player is timeout
  * \param id player-id
  * \return 1 - timeout; 0 - success
- * \note still not working
  *
- * TODO PlayerTimeout is still not working
  */
 int PlayerTimeout(int id)
 {
@@ -388,9 +386,9 @@ unsigned char *GetEncodedString(unsigned char *string, int length)
 }
 
 /**
- * \fn void CheckAllPlayerForReload(void)
- * \brief check all player if their reload is ended
- * ,send message if necessary, and rise their magazine
+ * \fn void CheckAllPlayerForReload(int writesocket)
+ * \brief check all player if their reload is ended,
+ * send message if necessary, and rise their magazine
  */
 void CheckAllPlayerForReload(int writesocket)
 {

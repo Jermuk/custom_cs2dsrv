@@ -1,6 +1,15 @@
 #include "../include/pakets.h"
 
-
+/**
+ * \fn int unknown(unsigned char *message, int length, unsigned char *buffer, int size, int position)
+ * \brief every unknown packet lands here
+ * \param *message pointer to the unknown message
+ * \param length sizeof message
+ * \param *buffer pointer to the udp-packet
+ * \param size sizeof buffer
+ * \param position where the unknown message in buffer begins
+ * \return read bytes (specific: parameter length)
+ */
 int unknown(unsigned char *message, int length, unsigned char *buffer, int size, int position)
 {
     int paketlength = length;
@@ -19,6 +28,15 @@ int unknown(unsigned char *message, int length, unsigned char *buffer, int size,
     return paketlength;
 }
 
+/**
+ * \fn int connection_setup_unknown(unsigned char *message, int length, struct in_addr ip, unsigned short port)
+ * \brief handles a connection setup for unknown player
+ * \param *message pointer to the unknown message
+ * \param length sizeof message
+ * \param ip clients ip
+ * \param port clients port
+ * \return read bytes (specific: 3)
+ */
 int connection_setup_unknown(unsigned char *message, int length, struct in_addr ip, unsigned short port)
 {
     int paketlength = 3;
@@ -30,6 +48,15 @@ int connection_setup_unknown(unsigned char *message, int length, struct in_addr 
     return paketlength;
 }
 
+/**
+ * \fn int connection_setup_known(unsigned char *message, int length, struct in_addr ip, unsigned short port)
+ * \brief handles a connection setup for known player
+ * \param *message pointer to the unknown message
+ * \param length sizeof message
+ * \param ip clients ip
+ * \param port clients port
+ * \return read bytes (specific: 3)
+ */
 int connection_setup_known(unsigned char *message, int length, struct in_addr ip, unsigned short port, int id)
 {
     int paketlength = 3;
@@ -42,6 +69,15 @@ int connection_setup_known(unsigned char *message, int length, struct in_addr ip
     return paketlength;
 }
 
+/**
+ * \fn int ping_ingame(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a answer from the server ingame ping. this function calculates the latency
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 5)
+ */
 int ping_ingame(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 5;
@@ -51,10 +87,19 @@ int ping_ingame(unsigned char *message, int length, int id, int writesocket)
         return length;
     }
     player[id].latency = mtime() - player[id].start;
-    printf("%s: %d\n", player[id].name, player[id].latency);
+    //printf("%s: %d\n", player[id].name, player[id].latency);
     return paketlength;
 }
 
+/**
+ * \fn int confirmation_unknown(unsigned char *message, int length, struct in_addr ip, unsigned short port)
+ * \brief handles a confirmation for unknown player
+ * \param *message pointer to the unknown message
+ * \param length sizeof message
+ * \param ip clients ip
+ * \param port clients port
+ * \return read bytes (specific: 3)
+ */
 int confirmation_unknown(unsigned char *message, int length, struct in_addr ip, unsigned short port)
 {
     int paketlength = 3;
@@ -67,6 +112,15 @@ int confirmation_unknown(unsigned char *message, int length, struct in_addr ip, 
     return paketlength;
 }
 
+/**
+ * \fn int confirmation_known(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a confirmation for known player
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 3)
+ */
 int confirmation_known(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 3;
@@ -78,6 +132,15 @@ int confirmation_known(unsigned char *message, int length, int id, int writesock
     return paketlength;
 }
 
+/**
+ * \fn int fire(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a fire
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 1)
+ */
 int fire(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 1;
@@ -97,6 +160,15 @@ int fire(unsigned char *message, int length, int id, int writesocket)
     return paketlength;
 }
 
+/**
+ * \fn int buy(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a buy request
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 3)
+ */
 int buy(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 3;
@@ -124,6 +196,15 @@ int buy(unsigned char *message, int length, int id, int writesocket)
     return paketlength;
 }
 
+/**
+ * \fn int rotupdate(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a rotation update
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 5)
+ */
 int rotupdate(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 5;
@@ -143,6 +224,15 @@ int rotupdate(unsigned char *message, int length, int id, int writesocket)
     return paketlength;
 }
 
+/**
+ * \fn int posupdatewalk(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a position walk update
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 5)
+ */
 int posupdatewalk(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 5;
@@ -170,7 +260,15 @@ int posupdatewalk(unsigned char *message, int length, int id, int writesocket)
     }
     return paketlength;
 }
-
+/**
+ * \fn int posupdaterun(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a position run update
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 5)
+ */
 int posupdaterun(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 5;
@@ -198,7 +296,15 @@ int posupdaterun(unsigned char *message, int length, int id, int writesocket)
     }
     return paketlength;
 }
-
+/**
+ * \fn int posrotupdatewalk(unsigned char *message, int length, int id, int writesocket))
+ * \brief handles a position walk and rotation update
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 9)
+ */
 int posrotupdatewalk(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 9;
@@ -235,6 +341,15 @@ int posrotupdatewalk(unsigned char *message, int length, int id, int writesocket
     return paketlength;
 }
 
+/**
+ * \fn int posrotupdaterun(unsigned char *message, int length, int id, int writesocket))
+ * \brief handles a position run and rotation update
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 9)
+ */
 int posrotupdaterun(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 9;
@@ -271,6 +386,15 @@ int posrotupdaterun(unsigned char *message, int length, int id, int writesocket)
     return paketlength;
 }
 
+/**
+ * \fn int respawnrequest(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a respawn request
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 1)
+ */
 int respawnrequest(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 1;
@@ -320,7 +444,15 @@ int respawnrequest(unsigned char *message, int length, int id, int writesocket)
     }
     return paketlength;
 }
-
+/**
+ * \fn int weaponchange(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a weapon change
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 3)
+ */
 int weaponchange(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 3;
@@ -348,6 +480,15 @@ int weaponchange(unsigned char *message, int length, int id, int writesocket)
     return paketlength;
 }
 
+/**
+ * \fn int teamchange(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a team change
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 3)
+ */
 int teamchange(unsigned char *message, int length, int id, int writesocket)
 {
     int paketlength = 3;
@@ -373,7 +514,15 @@ int teamchange(unsigned char *message, int length, int id, int writesocket)
     }
     return paketlength;
 }
-
+/**
+ * \fn int ping_serverlist(unsigned char *message, int length, struct sockaddr_in *client, int writesocket)
+ * \brief handles a team change
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param *client pointer to the client information structure
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 5)
+ */
 int ping_serverlist(unsigned char *message, int length, struct sockaddr_in *client, int writesocket)
 {
     int paketlength = 5;
