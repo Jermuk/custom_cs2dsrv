@@ -459,6 +459,7 @@ void PingAllPlayer(int writesocket, time_t firsttime)
     {
         firsttime = actualtime;
         SendPingList(writesocket);
+        SendMessageToAll("This is an alpha version! Don't play at it!", 1, writesocket); //Do not remove or change this until server reaches beta status
         int i;
         for(i = 1; i <= sv_maxplayers; i++)
         {

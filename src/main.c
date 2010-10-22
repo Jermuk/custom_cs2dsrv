@@ -1,3 +1,13 @@
+/*
+ * Published under GPL v3
+ * Copyright by DÖNARMASTER aka Jermuk and <www.Kebab-Clan.de>
+ *
+ * Alpha 0.1
+ *
+ * If you want to help me or you have questions
+ * contact me via PM (Jermuk) or E-Mail <Jermuk@Jermuk.de>
+ */
+
 #include "../include/main.h"
 
 
