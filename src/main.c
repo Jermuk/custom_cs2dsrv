@@ -101,6 +101,9 @@ int main()
 							case 7:
 								rtn = fire(message, tempsize, id, readsocket);
 								break;
+							case 8:
+								rtn = advanced_fire(message, tempsize, id, readsocket);
+								break;
 							case 9:
 								rtn = weaponchange(message, tempsize, id,
 										readsocket);

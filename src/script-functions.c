@@ -100,7 +100,10 @@ int OnWeaponChangeAttempt(int id, int wpnid, int writesocket)
 		if (player[id].slot[i].id == wpnid)
 		{
 			player[id].actualweapon = i;
-			player[id].zoommode = 0; //CHANGE there are also silencer, ...
+			if(weapons[wpnid].special == 4 || weapons[wpnid].special == 5)
+			{
+				player[id].zoommode = 0;
+			}
 			player[id].reloading = 0;
 
 			printf("%s switched to %s\n", player[id].name, weapons[player[id].slot[player[id].actualweapon].id].name);
@@ -111,9 +114,73 @@ int OnWeaponChangeAttempt(int id, int wpnid, int writesocket)
 }
 
 /*
+ int OnAdvancedFire(int id, int status, int writesocket)
+ Return Values:
+ 0 - OK
+ 1 - Not OK
+ */
+int OnAdvancedFire(int id, int status, int writesocket)
+{
+	int wpnid = player[id].slot[player[id].actualweapon].id;
+
+	switch(weapons[wpnid].special)
+	{
+	case 0:
+		printf("%s tried to hack!\n", player[id].name);
+		break;
+	case 1:
+	case 2:
+	{
+		if(status <= 1)
+		{
+			player[id].zoommode = status;
+			return 0;
+		}
+		break;
+	}
+	case 3:
+	{
+		player[id].zoommode = 1;
+		OnFire(id, writesocket);
+		player[id].zoommode = 0;
+		return 0;
+	}
+	case 4:
+	{
+		if(status <= 1)
+		{
+			player[id].zoommode = status;
+			return 0;
+		}
+		break;
+	}
+	case 5:
+	{
+		if(status <= 2 && player[id].zoommode+1 == status)
+		{
+			player[id].zoommode = status;
+			return 0;
+		}
+		else if(player[id].zoommode == 2)
+		{
+			player[id].zoommode = 0;
+			return 0;
+		}
+		break;
+	}
+	default:
+	{
+		SendMessageToPlayer(id, "Not implemented yet!", 1, writesocket);
+	}
+
+	}
+	return 1;
+}
+/*
  int OnFire(int id, int writesocket)
  Return Values:
  0 - OK
+ 1 - Not OK
  */
 int OnFire(int id, int writesocket)
 {

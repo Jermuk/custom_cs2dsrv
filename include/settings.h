@@ -30,7 +30,7 @@ extern unsigned short mp_specmode;
 extern unsigned short onlineplayer;
 extern unsigned short mp_startmoney;
 
-#define STARTWEAPONS_COUNT 1
+#define STARTWEAPONS_COUNT 2
 extern char startweapons[];
 
 #endif // SETTINGS_H_INCLUDED

@@ -82,6 +82,26 @@ void SendSpawnMessage(int id, unsigned short x, unsigned short y, int writesocke
     free(buffer);
 }
 
+void SendAdvancedFireMessage(int id, int status, int writesocket)
+{
+    int stringsize = 3;
+    unsigned char *buffer = malloc(stringsize);
+    if (buffer == NULL) error_exit("Memory error ( SendFireMessage() )\n");
+
+    int position = 0;
+
+    buffer[position] = 8;
+    position++;
+    buffer[position] = id;
+    position++;
+    buffer[position] = status;
+    position++;
+
+    SendToAll(buffer, stringsize, 1, writesocket);
+
+    free(buffer);
+}
+
 void SendFireMessage(int id, int writesocket)
 {
     int stringsize = 2;
@@ -455,11 +475,12 @@ void PingAllPlayer(int writesocket, time_t firsttime)
 {
     time_t actualtime;
     time(&actualtime);
-    if(actualtime >= (firsttime + 5))
+    if(1 == 2)//if(actualtime >= (firsttime + 5)) //FIXME will be executed many many times per sec
     {
         firsttime = actualtime;
         SendPingList(writesocket);
-        SendMessageToAll("This is an alpha version! Don't play at it!", 1, writesocket); //Do not remove or change this until server reaches beta status
+
+        //SendMessageToAll("This is an alpha version! Don't play at it!", 1, writesocket); //Do not remove or change this until server reaches beta status
         int i;
         for(i = 1; i <= sv_maxplayers; i++)
         {

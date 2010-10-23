@@ -15,13 +15,25 @@ struct WEAPON
     short accuracy;
     short ammo1, ammo2;
     char *name;
+    short special;
 };
 
 struct PLAYER_WEAPON
 {
     short id, slot;
     short ammo1, ammo2;
+    short special;
 };
+/*
+ * special
+ * 0 = Normal
+ * 1 = Silencer
+ * 2 = Burst
+ * 3 = Melee
+ * 4 = 1xZoom
+ * 5 = 2xZoom
+ * 6 = Shotgun
+ */
 
 struct PLAYER
 {

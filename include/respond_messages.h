@@ -3,6 +3,7 @@
 #include "main.h"
 
 void SendSpawnMessage(int id, unsigned short x, unsigned short y, int writesocket);
+void SendAdvancedFireMessage(int id, int status, int writesocket);
 void SendFireMessage(int id, int writesocket);
 void SendBuyMessage(int id, int wpnid, int writesocket);
 void SendHitMessage(int id, int victim, int health, int writesocket);

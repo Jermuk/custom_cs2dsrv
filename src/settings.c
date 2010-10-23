@@ -22,4 +22,4 @@ unsigned short mp_specmode      = 1;
 unsigned short onlineplayer     = 0;
 unsigned short mp_startmoney    = 65000;
 
-char startweapons[] = {50};
+char startweapons[] = {50, 35};

@@ -11,6 +11,7 @@ int OnExit();
 int OnRespawnRequest(int id, int writesocket);
 int OnRespawn(int id, int writesocket);
 int OnWeaponChangeAttempt(int id, int wpnid, int writesocket);
+int OnAdvancedFire(int id, int status, int writesocket);
 int OnFire(int id, int writesocket);
 int OnHit(int hitter, int victim, int writesocket);
 int OnBuyAttempt(int id, int wpnid, int writesocket);

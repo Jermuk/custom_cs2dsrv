@@ -161,6 +161,36 @@ int fire(unsigned char *message, int length, int id, int writesocket)
 }
 
 /**
+ * \fn int advanced_fire(unsigned char *message, int length, int id, int writesocket)
+ * \brief handles a advanced_fire (right click)
+ * \param *message pointer to the message
+ * \param length sizeof message
+ * \param id clients player id
+ * \param writesocket the socket where it was read
+ * \return read bytes (specific: 1)
+ */
+int advanced_fire(unsigned char *message, int length, int id, int writesocket)
+{
+    int paketlength = 2;
+    if(length < paketlength)
+    {
+        printf("Invalid packet (advanced_fire)!\n");
+        return length;
+    }
+    unsigned int status = message[1];
+
+    switch(OnAdvancedFire(id, status, writesocket))
+    {
+          case 0:
+                SendAdvancedFireMessage(id, status, writesocket);
+                break;
+            case 1:
+                break;
+    }
+    return paketlength;
+}
+
+/**
  * \fn int buy(unsigned char *message, int length, int id, int writesocket)
  * \brief handles a buy request
  * \param *message pointer to the message
