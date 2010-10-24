@@ -133,7 +133,7 @@ void udp_send(int socket, unsigned char *data, int length, struct sockaddr_in *c
     int rc;
 
     //printf("Try to send message to %s:%d...\n", inet_ntoa(client->sin_addr), client->sin_port);
-    rc = sendto(socket, data, length, 0, (struct sockaddr *)client, sizeof(*client));
+    rc = sendto(socket, (char*)data, length, 0, (struct sockaddr *)client, sizeof(*client));
     /*
     int i;
     for(i = 0; i <= length; i++)
@@ -166,10 +166,10 @@ void udp_send(int socket, unsigned char *data, int length, struct sockaddr_in *c
 int udp_recieve(int socket, unsigned char *data, int length, struct sockaddr_in *client)
 {
     struct sockaddr_in newclient;
-    unsigned int len;
+    int len;
     int size;
     len = sizeof(struct sockaddr_in);
-    size = recvfrom(socket, data, length, 0, (struct sockaddr *)&newclient,&len);
+    size = recvfrom(socket, (char*)data, length, 0, (struct sockaddr *)&newclient,&len);
     *client = newclient;
 #ifdef _WIN32
     if (size == SOCKET_ERROR)

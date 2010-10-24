@@ -50,7 +50,8 @@ struct PLAYER
     unsigned short *usgn;
     unsigned char team;
     unsigned char skin;
-    short deaths, score;
+    unsigned short deaths;
+    short score;
     unsigned short x,y;
     unsigned char health, armor;
     unsigned char actualweapon;

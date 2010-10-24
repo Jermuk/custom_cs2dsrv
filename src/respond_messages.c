@@ -273,7 +273,7 @@ void SendRotUpdate(int id, float rotation, int writesocket)
 }
 
 
-void SendMessageToPlayer(int id, unsigned char *message, int status, int writesocket)
+void SendMessageToPlayer(int id, char *message, int status, int writesocket)
 {
     /*
     1 - Chat
@@ -329,7 +329,7 @@ void SendMessageToAll(unsigned char *message, int status, int writesocket)
     3 - Console
     4 - Crash
     */
-    int stringsize = 5 + strlen(message);
+    int stringsize = 5 + u_strlen(message);
     unsigned char *buffer = malloc(stringsize);
     if (buffer == NULL) error_exit("Memory error ( SendChatMessage() )\n");
 
@@ -341,12 +341,12 @@ void SendMessageToAll(unsigned char *message, int status, int writesocket)
     position++;
     buffer[position] = status;
     position++;
-    buffer[position] = strlen(message);
+    buffer[position] = u_strlen(message);
     position++;
     buffer[position] = 0;
     position++;
-    memcpy(buffer+position, message, strlen(message));
-    position += strlen(message);
+    memcpy(buffer+position, message, u_strlen(message));
+    position += u_strlen(message);
 
     SendToAll(buffer, stringsize, 1, writesocket);
 
@@ -374,7 +374,7 @@ void SendMessageToAll(unsigned char *message, int status, int writesocket)
 
 void SendJoinMessage(int id, int writesocket)
 {
-    int stringsize = 4 + strlen(player[id].name);
+    int stringsize = 4 + u_strlen(player[id].name);
     unsigned char *buffer = malloc(stringsize);
     if (buffer == NULL) error_exit("Memory error ( SendJoinMessage() )\n");
 
@@ -384,13 +384,13 @@ void SendJoinMessage(int id, int writesocket)
     position++;
     buffer[position] = id;
     position++;
-    buffer[position] = strlen(player[id].name);
+    buffer[position] = u_strlen(player[id].name);
     position++;
 
-    memcpy(buffer+position, player[id].name, strlen(player[id].name));
-    position += strlen(player[id].name);
+    memcpy(buffer+position, player[id].name, u_strlen(player[id].name));
+    position += u_strlen(player[id].name);
 
-    buffer[position] = 0; //strlen ACK
+    buffer[position] = 0; //u_strlen ACK
     position++;
 
     SendToAll(buffer, stringsize, 1, writesocket);
@@ -410,7 +410,7 @@ void SendLeaveMessage(int id, int writesocket)
         position++;
         buffer[position] = id;
         position++;
-        buffer[position] = 0; //strlen ACK
+        buffer[position] = 0; //u_strlen ACK
         position++;
 
         SendToAll(buffer, stringsize, 1, writesocket);
@@ -420,7 +420,7 @@ void SendLeaveMessage(int id, int writesocket)
 
 void SendChatMessage(int id, unsigned char *message, int team, int writesocket)
 {
-    int stringsize = 5 + strlen(message);
+    int stringsize = 5 + u_strlen(message);
     unsigned char *buffer = malloc(stringsize);
     if (buffer == NULL) error_exit("Memory error ( SendChatMessage() )\n");
 
@@ -432,12 +432,12 @@ void SendChatMessage(int id, unsigned char *message, int team, int writesocket)
     position++;
     buffer[position] = team;
     position++;
-    buffer[position] = strlen(message);
+    buffer[position] = u_strlen(message);
     position++;
     buffer[position] = 0;
     position++;
-    memcpy(buffer+position, message, strlen(message));
-    position += strlen(message);
+    memcpy(buffer+position, message, u_strlen(message));
+    position += u_strlen(message);
     if(team == 1)
     {
         SendToAll(buffer, stringsize, 1, writesocket);

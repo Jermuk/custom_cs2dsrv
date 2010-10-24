@@ -12,9 +12,9 @@ void ReadMap()
 	tspawncount = 0;
 	ctspawncount = 0;
 
-	char *mappath = malloc(strlen(sv_map) + 5);
-	memcpy(mappath, sv_map, strlen(sv_map));
-	memcpy(mappath + strlen(sv_map), ".map\0", 5);
+	char *mappath = malloc(u_strlen(sv_map) + 5);
+	memcpy(mappath, sv_map, u_strlen(sv_map));
+	memcpy(mappath + u_strlen(sv_map), ".map\0", 5);
 
 	file = fopen(mappath, "rb");
 	if (file == NULL)
@@ -37,11 +37,11 @@ void ReadMap()
 	int maxx = ReadInt(file);
 	int maxy = ReadInt(file);
 	unsigned char *background = ReadLine(file);
-	int backgroundx = ReadInt(file);
-	int backgroundy = ReadInt(file);
-	unsigned char red = ReadByte(file);
-	unsigned char green = ReadByte(file);
-	unsigned char blue = ReadByte(file);
+	/*int backgroundx =*/ ReadInt(file); //avoid warnings: unused variable
+	/*int backgroundy =*/ ReadInt(file);
+	/*unsigned char red =*/ ReadByte(file);
+	/*unsigned char green =*/ ReadByte(file);
+	/*unsigned char blue =*/ ReadByte(file);
 	unsigned char *mapcheck = ReadLine(file);
 	//-----------------------------------------
 	unsigned char *tilemode = malloc(loaded + 1);
@@ -87,7 +87,7 @@ void ReadMap()
 		int b;
 		for (b = 0; b <= 9; b++)
 		{
-			int unknownint = ReadInt(file);
+			/*int unknownint =*/ ReadInt(file);
 			unsigned char *unknown = ReadLine(file);
 			//eprintf("(%d) %s || ", unknownint, unknown);
 			free(unknown);
@@ -161,7 +161,7 @@ unsigned char *ReadLine(FILE *file)
 
 	fgetc(file); //0x0A
 
-	return line;
+	return (unsigned char*)line;
 }
 
 /**

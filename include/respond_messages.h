@@ -11,7 +11,7 @@ void SendWeaponChangeMessage(int id, int wpnid, int writesocket);
 void SendPosUpdate(int id, unsigned short x, unsigned short y, int status, int writesocket);
 void SendPosRotUpdate(int id, unsigned short x, unsigned short y, int status, float rotation, int writesocket);
 void SendRotUpdate(int id, float rotation, int writesocket);
-void SendMessageToPlayer(int id, unsigned char *message, int status, int writesocket);
+void SendMessageToPlayer(int id, char *message, int status, int writesocket);
 void SendMessageToAll(unsigned char *message, int status, int writesocket);
 void SendJoinMessage(int id, int writesocket);
 void SendLeaveMessage(int id, int writesocket);

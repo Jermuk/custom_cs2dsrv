@@ -9,6 +9,7 @@ int ping_ingame(unsigned char *message, int length, int id, int writesocket);
 int confirmation_unknown(unsigned char *message, int length, struct in_addr ip, unsigned short port);
 int confirmation_known(unsigned char *message, int length, int id, int writesocket);
 int fire(unsigned char *message, int length, int id, int writesocket);
+int advanced_fire(unsigned char *message, int length, int id, int writesocket);
 int buy(unsigned char *message, int length, int id, int writesocket);
 int rotupdate(unsigned char *message, int length, int id, int writesocket);
 int posupdatewalk(unsigned char *message, int length, int id, int writesocket);

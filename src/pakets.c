@@ -595,7 +595,7 @@ int serverinfo_request(unsigned char *message, int length, struct sockaddr_in *c
         int joinroutine_known(unsigned char *message, int length, int id, int writesocket)
     */
 
-    int stringsize = 10 + strlen(sv_name) + strlen(sv_map);
+    int stringsize = 10 + u_strlen(sv_name) + u_strlen(sv_map);
     if(sv_gamemode != 0)
     {
         stringsize++;
@@ -632,14 +632,14 @@ int serverinfo_request(unsigned char *message, int length, struct sockaddr_in *c
 
         buffer[position] = GetServerStatus();
         position++;
-        buffer[position] = strlen(sv_name);
+        buffer[position] = u_strlen(sv_name);
         position++;
-        memcpy(buffer+position, sv_name, strlen(sv_name));
-        position += strlen(sv_name);
-        buffer[position] = strlen(sv_map);
+        memcpy(buffer+position, sv_name, u_strlen(sv_name));
+        position += u_strlen(sv_name);
+        buffer[position] = u_strlen(sv_map);
         position++;
-        memcpy(buffer+position, sv_map, strlen(sv_map));
-        position += strlen(sv_map);
+        memcpy(buffer+position, sv_map, u_strlen(sv_map));
+        position += u_strlen(sv_map);
         buffer[position] = onlineplayer;
         position++;
         buffer[position] = sv_maxplayers;
@@ -694,7 +694,7 @@ int joinroutine_unknown(unsigned char *message, int length, struct sockaddr_in *
                 break;
             }
         }
-        int stringsize = 5 + strlen(pre_authcode);
+        int stringsize = 5 + u_strlen(pre_authcode);
         unsigned char *buffer = malloc(stringsize);
         if(buffer == NULL) error_exit("Memory error ( joinroutine_unknown() )");
 
@@ -707,9 +707,9 @@ int joinroutine_unknown(unsigned char *message, int length, struct sockaddr_in *
         position++;
         buffer[position] = 0x00;
         position++;
-        buffer[position] = strlen(pre_authcode);
+        buffer[position] = u_strlen(pre_authcode);
         position++;
-        memcpy(buffer+position, pre_authcode, strlen(pre_authcode));
+        memcpy(buffer+position, pre_authcode, u_strlen(pre_authcode));
 
         udp_send(writesocket, buffer, stringsize, client);
 
@@ -870,7 +870,7 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
             //printf("\tPassword: ");
             /*
             int i;
-            for (i = 0; i <= strlen(password); i++)
+            for (i = 0; i <= u_strlen(password); i++)
             {
                 printf("%d-", password[i]);
             }
@@ -972,7 +972,7 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
             position += stringsize;
 
 
-            //printf("\tWIN: %s (%d)\n", player[id].win, strlen(player[id].win));
+            //printf("\tWIN: %s (%d)\n", player[id].win, u_strlen(player[id].win));
 
             unsigned char *buffer = NULL;
             stringsize = 0;
@@ -980,7 +980,7 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
             switch(tempstatus)
             {
             case 0x00:
-                stringsize = 6 + strlen(sv_map) + strlen(pre_authcode);
+                stringsize = 6 + u_strlen(sv_map) + u_strlen(pre_authcode);
                 buffer = malloc(stringsize);
                 if (buffer == NULL) error_exit("Memory error ( joinroutine_known() )\n");
 
@@ -994,14 +994,14 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
                 position++;
                 buffer[position] = id;
                 position++;
-                buffer[position] = strlen(sv_map);
+                buffer[position] = u_strlen(sv_map);
                 position++;
-                memcpy(buffer+position, sv_map, strlen(sv_map));
-                position += strlen(sv_map);
-                buffer[position] = strlen(pre_authcode);
+                memcpy(buffer+position, sv_map, u_strlen(sv_map));
+                position += u_strlen(sv_map);
+                buffer[position] = u_strlen(pre_authcode);
                 position++;
-                memcpy(buffer+position, pre_authcode, strlen(pre_authcode));
-                position += strlen(pre_authcode);
+                memcpy(buffer+position, pre_authcode, u_strlen(pre_authcode));
+                position += u_strlen(pre_authcode);
                 player[id].joinstatus = 2;
                 break;
 
@@ -1024,7 +1024,7 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
             }
 
             }
-            //stringsize = 16 + strlen(sv_map);
+            //stringsize = 16 + u_strlen(sv_map);
 
             /*
             0 - Normal
@@ -1107,7 +1107,7 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
             //printf("\tpre_authcode_respond: %s\n", pre_authcode_respond);
 
             //Player Version
-            unsigned char mapstatus = message[position]; //avoid warning
+            //unsigned char mapstatus = message[position]; //avoid warning
             position++;
             //printf("\tMapstatus: %d\n", mapstatus);
 
@@ -1170,7 +1170,7 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
 
             //----------- ServerData -----------
 
-            stringsize = 28 + strlen(sv_map) + strlen(sv_name);
+            stringsize = 28 + u_strlen(sv_map) + u_strlen(sv_name);
             unsigned char *buffer = malloc(stringsize);
             if (buffer == NULL) error_exit("Memory error ( joinroutine_known() )\n");
 
@@ -1183,15 +1183,15 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
             buffer[position] = 0; //CheckPlayerData()
             position++;
 
-            buffer[position] = strlen(sv_map);
+            buffer[position] = u_strlen(sv_map);
             position++;
-            memcpy(buffer+position, sv_map, strlen(sv_map));
-            position += strlen(sv_map);
+            memcpy(buffer+position, sv_map, u_strlen(sv_map));
+            position += u_strlen(sv_map);
 
-            buffer[position] = strlen(sv_name);
+            buffer[position] = u_strlen(sv_name);
             position++;
-            memcpy(buffer+position, sv_name, strlen(sv_name));
-            position += strlen(sv_name);
+            memcpy(buffer+position, sv_name, u_strlen(sv_name));
+            position += u_strlen(sv_name);
 
             buffer[position] = 0; //Unknown
             position++;
@@ -1231,7 +1231,7 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
             position++;
             buffer[position] = mp_infammo;
             position++;
-            buffer[position] = 3; //strlen ACK
+            buffer[position] = 3; //u_strlen ACK
             position++;
             buffer[position] = 65; //A
             position++;
@@ -1265,9 +1265,9 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
                 if(player[i].used == 1 && player[i].joinstatus >= 1 && i != id)
                 {
                     unsigned char *encodedname;
-                    encodedname = GetEncodedString(player[i].name, strlen(player[i].name));
+                    encodedname = GetEncodedString(player[i].name, u_strlen(player[i].name));
                     unsigned short *deaths = &player[i].deaths;
-                    unsigned short tempscore = player[i].deaths + 1000;
+                    unsigned short tempscore = (unsigned)(player[i].deaths + 1000);
                     unsigned short *score = &tempscore;
 
                     unsigned short tempx = (player[i].x);
@@ -1277,17 +1277,17 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
 
                     float *ptemprotation = &player[i].rotation;
 
-                    int playersize = 25 + strlen(encodedname);
+                    int playersize = 25 + u_strlen(encodedname);
                     buffer = realloc(buffer, position+1 + playersize); //+1 because e.g. buffer[10] are 11 chars
                     if (buffer == NULL) error_exit("Memory error ( joinroutine_known() )\n");
 
                     buffer[position] = i;
                     position++;
 
-                    buffer[position] = strlen(encodedname);
+                    buffer[position] = u_strlen(encodedname);
                     position++;
-                    memcpy(buffer+position, encodedname, strlen(encodedname));
-                    position += strlen(encodedname);
+                    memcpy(buffer+position, encodedname, u_strlen(encodedname));
+                    position += u_strlen(encodedname);
                     free(encodedname);
 
                     buffer[position] = 0; //Unknown
@@ -1355,9 +1355,9 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
             if(1)
             {
                 unsigned char *encodedname;
-                encodedname = GetEncodedString(player[id].name, strlen(player[id].name));
+                encodedname = GetEncodedString(player[id].name, u_strlen(player[id].name));
 
-                int playersize = 25 + strlen(encodedname);
+                int playersize = 25 + u_strlen(encodedname);
                 buffer = realloc(buffer, position+1 + playersize); //+1 because e.g. buffer[10] are 11 chars
                 if (buffer == NULL) error_exit("Memory error ( joinroutine_known() )\n");
 
@@ -1365,10 +1365,10 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
                 position++;
 
 
-                buffer[position] = strlen(encodedname);
+                buffer[position] = u_strlen(encodedname);
                 position++;
-                memcpy(buffer+position, encodedname, strlen(encodedname));
-                position += strlen(encodedname);
+                memcpy(buffer+position, encodedname, u_strlen(encodedname));
+                position += u_strlen(encodedname);
                 free(encodedname);
 
                 buffer[position] = 0; //Unknown
@@ -1572,7 +1572,7 @@ int joinroutine_known(unsigned char *message, int length, int id, int writesocke
             position++;
             buffer[position] = 200; //third payload
             position++;
-            buffer[position] = 3; //strlen ACK
+            buffer[position] = 3; //u_strlen ACK
             position++;
             buffer[position] = 65; //A
             position++;

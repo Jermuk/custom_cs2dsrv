@@ -195,7 +195,7 @@ int PlayerTimeout(int id)
 unsigned short GetServerStatus(void)
 {
     unsigned short serverstatus = 0;
-    if(strcmp(sv_password, ""))
+    if(strcmp((char*)sv_password, ""))
     {
         serverstatus += 1;
     }
@@ -264,7 +264,7 @@ unsigned int endian_swap_int(unsigned int *x)
  * \param id player-id
  * \return 0 if invalid; 1 if valid
  */
-int ValidatePaket(char *message, int id)
+int ValidatePaket(unsigned char *message, int id)
 {
     unsigned short *pTempNummer = malloc(sizeof(unsigned short));
     pTempNummer[0] = message[0];
@@ -296,7 +296,7 @@ int ValidatePaket(char *message, int id)
  * \param *message pointer to the message
  * \param id player-id
  */
-void PaketConfirmation(char *message, int id, int writesocket)
+void PaketConfirmation(unsigned char *message, int id, int writesocket)
 {
     unsigned short *pTempNummer = malloc(sizeof(unsigned short));
     pTempNummer[0] = message[0];
@@ -320,9 +320,9 @@ void PaketConfirmation(char *message, int id, int writesocket)
  * \param *password pointer to the password
  * \return the error number or 0
  */
-int CheckPlayerData(char *password)
+int CheckPlayerData(unsigned char *password)
 {
-    if(strcmp(sv_password, password) != 0)
+    if( strcmp((char*)sv_password, (char*)password) != 0 )
     {
         printf("Password wrong!\n");
         return 1;
@@ -413,4 +413,9 @@ void CheckAllPlayerForReload(int writesocket)
 			}
 		}
 	}
+}
+
+size_t u_strlen(unsigned char* buffer)
+{
+	return strlen((char*)buffer);
 }
