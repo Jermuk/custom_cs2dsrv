@@ -1,3 +1,11 @@
+/*
+ * Published under GPLv3.
+ * For more information take a look at the Readme
+ * Copyright (c) by the authors of this file
+ *
+ * Author/s of this file: Jermuk
+ */
+
 #include "../include/script-functions.h"
 
 /*
@@ -100,7 +108,7 @@ int OnWeaponChangeAttempt(int id, int wpnid, int writesocket)
 		if (player[id].slot[i].id == wpnid)
 		{
 			player[id].actualweapon = i;
-			if(weapons[wpnid].special == 4 || weapons[wpnid].special == 5)
+			if (weapons[wpnid].special == 4 || weapons[wpnid].special == 5)
 			{
 				player[id].zoommode = 0;
 			}
@@ -123,58 +131,71 @@ int OnAdvancedFire(int id, int status, int writesocket)
 {
 	int wpnid = player[id].slot[player[id].actualweapon].id;
 
-	switch(weapons[wpnid].special)
+	int temptime = mtime();
+	if (temptime < player[id].zoomtimer)
+	{
+		printf("Zoomtimer error!\n");
+		return 1;
+	}
+	else
+	{
+		player[id].zoomtimer = mtime() + 500;
+	}
+
+	switch (weapons[wpnid].special)
 	{
 	case 0:
 		printf("%s tried to hack!\n", player[id].name);
-		break;
+		return 1;
 	case 1:
 	case 2:
 	{
-		if(status <= 1)
+		if (status <= 1)
 		{
 			player[id].zoommode = status;
-			return 0;
+			break;
 		}
-		break;
+		return 1;
 	}
 	case 3:
 	{
 		player[id].zoommode = 1;
 		OnFire(id, writesocket);
 		player[id].zoommode = 0;
-		return 0;
+		break;
 	}
 	case 4:
 	{
-		if(status <= 1)
+		if (status <= 1)
 		{
 			player[id].zoommode = status;
-			return 0;
+			break;
 		}
-		break;
+		return 1;
 	}
 	case 5:
 	{
-		if(status <= 2 && player[id].zoommode+1 == status)
+		if (status <= 2 && player[id].zoommode + 1 == status)
 		{
 			player[id].zoommode = status;
-			return 0;
+			break;
 		}
-		else if(player[id].zoommode == 2)
+		else if (player[id].zoommode == 2)
 		{
 			player[id].zoommode = 0;
-			return 0;
+			break;
 		}
-		break;
+		return 1;
 	}
 	default:
 	{
 		SendMessageToPlayer(id, "Not implemented yet!", 1, writesocket);
+		return 1;
 	}
 
 	}
-	return 1;
+
+	return 0;
 }
 /*
  int OnFire(int id, int writesocket)
@@ -198,21 +219,18 @@ int OnFire(int id, int writesocket)
 			*ammo1 = *ammo1 - 1;
 		}
 	}
-	// TODO Firetimer does not work
-	/*
-	 int temptime = mtime();
-	 printf("Temptime: %d; Firetimer: %d\n", temptime, player[id].firetimer);
-	 if(temptime < player[id].firetimer)
-	 {
-	 printf("Firetimer error!");
-	 return 1;
-	 }
-	 else
-	 {
-	 player[id].firetimer = mtime() + weapons[player[id].slot[player[id].actualweapon].id].freq;
-	 //printf("(Debug) %d\n", player[id].firetimer);
-	 }
-	 */
+	int temptime = mtime();
+	if (temptime < player[id].firetimer)
+	{
+		printf("Firetimer error!\n");
+		return 1;
+	}
+	else
+	{
+		player[id].firetimer = mtime()
+				+ weapons[player[id].slot[player[id].actualweapon].id].freq;
+	}
+
 	int i;
 	int range = weapons[player[id].slot[player[id].actualweapon].id].range;
 
@@ -320,42 +338,46 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 		int i;
 		for (i = 0; i <= 99; i++)
 		{
-			if (weapons[wpnid].freq != 0) //If weapon unknown -> everything is 0
+			if (weapons[wpnid].name != NULL) //test if weapon available
 			{
-				//Check if in buyzone
-				if (player[id].team == 1)
+				if (weapons[wpnid].team == 0 || weapons[wpnid].team
+						== player[id].team) //Check if he is in the right team to buy this weapon
 				{
-					int b;
-					for (b = 0; b <= tspawncount; b++)
+					if (player[id].team == 1)
 					{
-						int playerx = player[id].x;
-						int playery = player[id].y;
-						int tempx = tspawnx[b] * 32;
-						int tempy = tspawny[b] * 32;
-						//If player in buyzone (5*5)
-						if (playerx >= tempx - 64 && playerx <= tempx + 64
-								&& playery >= tempy - 64 && playery <= tempy
-								+ 64)
+						//Check if in buyzone
+						int b;
+						for (b = 0; b <= tspawncount; b++)
 						{
-							return 0;
+							int playerx = player[id].x;
+							int playery = player[id].y;
+							int tempx = tspawnx[b] * 32;
+							int tempy = tspawny[b] * 32;
+							//If player in buyzone (5*5)
+							if (playerx >= tempx - 64 && playerx <= tempx + 64
+									&& playery >= tempy - 64 && playery
+									<= tempy + 64)
+							{
+								return 0;
+							}
 						}
 					}
-				}
-				else if (player[id].team == 2)
-				{
-					int b;
-					for (b = 0; b <= ctspawncount; b++)
+					else if (player[id].team == 2)
 					{
-						int playerx = player[id].x;
-						int playery = player[id].y;
-						int tempx = ctspawnx[b] * 32;
-						int tempy = ctspawny[b] * 32;
-						//If player in buyzone (5*5)
-						if (playerx >= tempx - 64 && playerx <= tempx + 64
-								&& playery >= tempy - 64 && playery <= tempy
-								+ 64)
+						int b;
+						for (b = 0; b <= ctspawncount; b++)
 						{
-							return 0;
+							int playerx = player[id].x;
+							int playery = player[id].y;
+							int tempx = ctspawnx[b] * 32;
+							int tempy = ctspawny[b] * 32;
+							//If player in buyzone (5*5)
+							if (playerx >= tempx - 64 && playerx <= tempx + 64
+									&& playery >= tempy - 64 && playery
+									<= tempy + 64)
+							{
+								return 0;
+							}
 						}
 					}
 				}

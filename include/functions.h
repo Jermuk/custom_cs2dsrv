@@ -1,3 +1,11 @@
+/*
+ * Published under GPLv3.
+ * For more information take a look at the Readme
+ * Copyright (c) by the authors of this file
+ *
+ * Author/s of this file: Jermuk
+ */
+
 #ifndef FUNCTIONS_H_INCLUDED
 #define FUNCTIONS_H_INCLUDED
 
@@ -19,7 +27,5 @@ int CheckPlayerData(unsigned char *password);
 unsigned char *GetEncodedString(unsigned char *string, int length);
 void CheckAllPlayerForReload(int writesocket);
 size_t u_strlen(unsigned char* buffer);
-
-extern time_t firsttime;
 
 #endif // FUNCTIONS_H_INCLUDED

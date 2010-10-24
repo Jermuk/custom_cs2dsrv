@@ -1,3 +1,11 @@
+/*
+ * Published under GPLv3.
+ * For more information take a look at the Readme
+ * Copyright (c) by the authors of this file
+ *
+ * Author/s of this file: Jermuk
+ */
+
 #include "../include/map.h"
 
 /**
@@ -19,7 +27,7 @@ void ReadMap()
 	file = fopen(mappath, "rb");
 	if (file == NULL)
 		error_exit("Map not found.. Abort\n");
-	else printf("Loading '%s'..", mappath);
+		else printf("Loading '%s'..", mappath);
 
 	free(mappath);
 
@@ -37,11 +45,16 @@ void ReadMap()
 	int maxx = ReadInt(file);
 	int maxy = ReadInt(file);
 	unsigned char *background = ReadLine(file);
-	/*int backgroundx =*/ ReadInt(file); //avoid warnings: unused variable
-	/*int backgroundy =*/ ReadInt(file);
-	/*unsigned char red =*/ ReadByte(file);
-	/*unsigned char green =*/ ReadByte(file);
-	/*unsigned char blue =*/ ReadByte(file);
+	/*int backgroundx =*/
+	ReadInt(file); //avoid warnings: unused variable
+	/*int backgroundy =*/
+	ReadInt(file);
+	/*unsigned char red =*/
+	ReadByte(file);
+	/*unsigned char green =*/
+	ReadByte(file);
+	/*unsigned char blue =*/
+	ReadByte(file);
 	unsigned char *mapcheck = ReadLine(file);
 	//-----------------------------------------
 	unsigned char *tilemode = malloc(loaded + 1);
@@ -87,7 +100,7 @@ void ReadMap()
 		int b;
 		for (b = 0; b <= 9; b++)
 		{
-			/*int unknownint =*/ ReadInt(file);
+			/*int unknownint =*/ReadInt(file);
 			unsigned char *unknown = ReadLine(file);
 			//eprintf("(%d) %s || ", unknownint, unknown);
 			free(unknown);
@@ -161,7 +174,7 @@ unsigned char *ReadLine(FILE *file)
 
 	fgetc(file); //0x0A
 
-	return (unsigned char*)line;
+	return (unsigned char*) line;
 }
 
 /**

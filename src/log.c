@@ -1,3 +1,11 @@
+/*
+ * Published under GPLv3.
+ * For more information take a look at the Readme
+ * Copyright (c) by the authors of this file
+ *
+ * Author/s of this file: Jermuk
+ */
+
 #include "../include/log.h"
 
 /**
@@ -9,41 +17,42 @@
 void myprintf(char *string, ...)
 {
 #ifdef _WIN32
-    FILE *logfile;
-    time_t rawtime;
-    struct tm * timeinfo;
+	FILE *logfile;
+	time_t rawtime;
+	struct tm * timeinfo;
 
-    logfile = fopen("log.txt","a+");
-    if(logfile != NULL)
-    {
-        time(&rawtime);
-        timeinfo = localtime(&rawtime);
-        //fprintf(logfile, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-        fprintf(stdout, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+	logfile = fopen("log.txt", "a+");
+	if (logfile != NULL)
+	{
+		time(&rawtime);
+		timeinfo = localtime(&rawtime);
+		//fprintf(logfile, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+		fprintf(stdout, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min,
+				timeinfo->tm_sec);
 
-        va_list argzeiger;
-        va_start(argzeiger,string);
-        vprintf(string,argzeiger);
-        //vfprintf(logfile, string, argzeiger);
-        va_end(argzeiger);
+		va_list argzeiger;
+		va_start(argzeiger,string);
+		vprintf(string, argzeiger);
+		//vfprintf(logfile, string, argzeiger);
+		va_end(argzeiger);
 
-        fclose(logfile);
-    }
-    else
-    {
-        printf("Cannot open logfile!\n");
-    }
+		fclose(logfile);
+	}
+	else
+	{
+		printf("Cannot open logfile!\n");
+	}
 #else
-    time_t rawtime;
-    struct tm * timeinfo;
-    time(&rawtime);
-    timeinfo = localtime(&rawtime);
-    fprintf(stdout, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+	time_t rawtime;
+	struct tm * timeinfo;
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	fprintf(stdout, "[%d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
-    va_list argzeiger;
-    va_start(argzeiger,string);
-    vprintf(string,argzeiger);
-    va_end(argzeiger);
+	va_list argzeiger;
+	va_start(argzeiger,string);
+	vprintf(string,argzeiger);
+	va_end(argzeiger);
 #endif
 }
 
@@ -56,26 +65,26 @@ void myprintf(char *string, ...)
 void myprintf2(char *string, ...)
 {
 #ifdef _WIN32
-    FILE *logfile;
-    logfile = fopen("log.txt","a+");
-    if(logfile != NULL)
-    {
-        va_list argzeiger;
-        va_start(argzeiger,string);
-        vprintf(string,argzeiger);
-        vfprintf(logfile, string, argzeiger);
-        va_end(argzeiger);
+	FILE *logfile;
+	logfile = fopen("log.txt", "a+");
+	if (logfile != NULL)
+	{
+		va_list argzeiger;
+		va_start(argzeiger,string);
+		vprintf(string, argzeiger);
+		vfprintf(logfile, string, argzeiger);
+		va_end(argzeiger);
 
-        fclose(logfile);
-    }
-    else
-    {
-        printf("Cannot open logfile!\n");
-    }
+		fclose(logfile);
+	}
+	else
+	{
+		printf("Cannot open logfile!\n");
+	}
 #else
-    va_list argzeiger;
-    va_start(argzeiger,string);
-    vprintf(string,argzeiger);
-    va_end(argzeiger);
+	va_list argzeiger;
+	va_start(argzeiger,string);
+	vprintf(string,argzeiger);
+	va_end(argzeiger);
 #endif
 }

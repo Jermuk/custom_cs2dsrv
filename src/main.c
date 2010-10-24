@@ -1,15 +1,12 @@
 /*
- * Published under GPL v3
- * Copyright by DÖNARMASTER aka Jermuk and <www.Kebab-Clan.de>
+ * Published under GPLv3.
+ * For more information take a look at the Readme
+ * Copyright (c) by the authors of this file
  *
- * Alpha 0.1
- *
- * If you want to help me or you have questions
- * contact me via PM (Jermuk) or E-Mail <Jermuk@Jermuk.de>
+ * Author/s of this file: Jermuk
  */
 
 #include "../include/main.h"
-
 
 /**
  * \fn int main()
@@ -42,13 +39,13 @@ int main()
 
 	/**
 	 * \var needed for PingAllPlayer() to execute it every 5 sec
-	*/
+	 */
 	time_t firsttime;
 	time(&firsttime);
 	while (1)
 	{
 		CheckForTimeout(readsocket);
-		PingAllPlayer(readsocket, firsttime); /// also execute PingList()
+		PingAllPlayer(readsocket, &firsttime); /// also execute PingList()
 		CheckAllPlayerForReload(readsocket);
 
 		select(readsocket + 1, &descriptor, NULL, NULL, NULL);
@@ -102,7 +99,8 @@ int main()
 								rtn = fire(message, tempsize, id, readsocket);
 								break;
 							case 8:
-								rtn = advanced_fire(message, tempsize, id, readsocket);
+								rtn = advanced_fire(message, tempsize, id,
+										readsocket);
 								break;
 							case 9:
 								rtn = weaponchange(message, tempsize, id,
@@ -139,7 +137,8 @@ int main()
 								rtn = buy(message, tempsize, id, readsocket);
 								break;
 							case 32:
-								rtn = specpos(message, tempsize, id,
+								rtn
+										= specpos(message, tempsize, id,
 												readsocket);
 								break;
 							case 39:
@@ -178,7 +177,7 @@ int main()
 							}
 							/**
 							 * Security check (Buffer Overflow)
-							*/
+							 */
 							else if (position > size)
 							{
 								printf("Error while reading packet: position(%d) > size(%d)\n", position, size);
@@ -237,7 +236,7 @@ int main()
 						}
 						/**
 						 * Security check (Buffer Overflow)
-						*/
+						 */
 						else if (position > size)
 						{
 							printf("Error while reading packet: position(%d) > size(%d)\n", position, size);

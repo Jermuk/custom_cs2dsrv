@@ -1,3 +1,11 @@
+/*
+ * Published under GPLv3.
+ * For more information take a look at the Readme
+ * Copyright (c) by the authors of this file
+ *
+ * Author/s of this file: Jermuk
+ */
+
 #include "../include/settings.h"
 
 unsigned char pre_authcode[]    = "5TWs3Obv7";

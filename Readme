@@ -1,0 +1,27 @@
+Custom Counter Strike 2D Server a0.1
+
+Copyright (C) 2010 by the authors of their respective files
+
+This program is free software; you can redistribute it and/or modify it under the 
+terms of the GNU General Public License as published by the Free Software Foundation; 
+either version 3 of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with this program; 
+if not, see <http://www.gnu.org/licenses/>.
+
+
+If you want to help me or you have questions
+contact me via Unrealsoftware-PM (Jermuk) or E-Mail <Jermuk@Jermuk.de>
+
+Notice to windows:
+If you get linker errors, try to include the library libwsock32.
+
+Credits:
+- Main coder: Jermuk aka DÖNARMASTER from <www.Kebab-Clan.de>
+
+Thanks to:
+- Rynti and PopUp for helping me to write the OnFire routine
+- Rynti for helping me to encrypt cs2d's packet structure
+- DC, without him, I never understood cs2d's packet structure
