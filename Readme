@@ -9,14 +9,14 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
 FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program; 
-if not, see <http://www.gnu.org/licenses/>.
+if not, see <http://www.gnu.org/licenses/ >.
 
 
 If you want to help me or you have questions
 contact me via Unrealsoftware-PM (Jermuk) or E-Mail < JExRMxUK (at)JExRMxUK (dot) DE > (Without x)
 
 Notice to windows:
-If you get linker errors, try to include the library libwsock32.
+If you get linker errors, try to include the library libwsock32 or ws2_32.lib.
 
 Credits:
 - Main coder: Jermuk aka DÖNARMASTER from <www.Kebab-Clan.de>

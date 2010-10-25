@@ -26,6 +26,7 @@ int main()
 
 	ClearAllPlayer();
 	WeaponInit();
+	ReadCfg();
 
 	readsocket = create_socket();
 	bind_socket(&readsocket, INADDR_ANY, LOCAL_PORT);

@@ -10,7 +10,7 @@
 #define STRUCTS_H_INCLUDED
 
 #include "main.h"
-
+#define MAX_CLIENTS 64
 struct WEAPON
 {
 	short weapondamage, weapondamage_z1, weapondamage_z2;
