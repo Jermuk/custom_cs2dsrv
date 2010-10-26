@@ -64,6 +64,7 @@ int readConfig()
             {
                 if(s[i] == ' ')
                 {
+                	i++; //skip ' ' char
                     struct setting * var;
                     var = (struct setting*)malloc(sizeof(struct setting));
 
@@ -71,10 +72,21 @@ int readConfig()
                     if(var->name == NULL) error_exit("Memory error in readConfig()\n");
                     strncpy(var->name,s,i);
                     var->name[i] = '\0';
-                    var->value = malloc(strlen(s)-i-1 +1);
-                    if(var->value == NULL) error_exit("Memory error in readConfig()\n");
-                    strncpy(var->value,&s[i],strlen(s)-i-1); //also ommit the \n
-                    var->value[strlen(s)-i-1] = '\0';
+                    if(s[strlen(s)-i-1] == '\n') //if  \n found then remove it
+                    {
+                    	var->value = malloc(strlen(s)-i-1 +1);
+                    	if(var->value == NULL) error_exit("Memory error in readConfig()\n");
+                    	strncpy(var->value,&s[i],strlen(s)-i-1); //also ommit the \n
+                    	var->value[strlen(s)-i-1] = '\0';
+                    }
+                    else
+                    {
+                    	var->value = malloc(strlen(s)-i +1);
+                    	if(var->value == NULL) error_exit("Memory error in readConfig()\n");
+                    	strncpy(var->value,&s[i],strlen(s)-i); //also ommit the \n
+                    	var->value[strlen(s)-i] = '\0';
+                    }
+
 
                     settings[setting_num] = var;
                     break;

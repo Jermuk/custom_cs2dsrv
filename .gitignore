@@ -8,3 +8,4 @@ doxygen.Doxyfile
 Release/src
 *.map
 *.cfg
+notices
