@@ -561,6 +561,31 @@ void SendReloadMessage(int id, int status, int writesocket)
 	SendToAll(buffer, stringsize, 1, writesocket);
 	free(buffer);
 }
+
+// 28 - id - xx - yy - c
+void SendSprayMessage(char id, unsigned short xx, unsigned short yy, char c,
+		int writesocket)
+{
+	int stringsize = 8;
+	unsigned char *buffer = malloc(stringsize * sizeof(char));
+	if (buffer == NULL)
+		error_exit("Memory error ( SendReloadMessage() )\n");
+
+	int position = 0;
+
+	buffer[position++] = 28;
+	buffer[position++] = 0;
+	buffer[position++] = id;
+	memcpy(buffer + position, &xx, 2);
+	position += 2;
+	memcpy(buffer + position, &yy, 2);
+	position += 2;
+	buffer[position++] = c;
+
+	// SendToAll(buffer, stringsize, 1, writesocket); -- Make sure that the spray-image send packet is crafted first.
+	free(buffer);
+}
+
 //FIXME complete SendKillMessage
 void SendKillMessage(int id, int writesocket)
 {
@@ -620,5 +645,50 @@ void SendPingList(int writesocket)
 	}
 
 	SendToAll(buffer, stringsize, 0, writesocket);
+	free(buffer);
+}
+
+void SendBuyFailedMessage(int id, int status, int writesocket)
+{
+	int stringsize = 6;
+	unsigned char *buffer = malloc(stringsize);
+	if (buffer == NULL)
+		error_exit("Memory error ( SendBuyFailedMessage() )\n");
+
+	int position = 0;
+	buffer[position] = 23;
+	position++;
+	buffer[position] = 1;
+	position++;
+	buffer[position] = status;
+	position++;
+	buffer[position] = 44;
+	position++;
+	buffer[position] = 1;
+	position++;
+	buffer[position] = 0;
+	position++;
+	//TODO what does the last lines mean?
+
+	/*
+		 * 242 nothing
+		 * 243 Grenade rebuying is not allowed at this server
+		 * 244 it's not allowed to buy that weapon at this server
+		 * 245 you can't carry more of this
+		 * 246 you can't carry more of this
+		 * 247 you can't carry an additional weapon
+		 * 248 you can't buy more ammo
+		 * 249 you are not allowed to buy anything
+		 * 250 buying is not allowed
+		 * 251 you have already this or something better
+		 * 252 you can't buy this item;
+		 * 253 insufficient fund;
+		 * 254 buytime passed;
+		 * 255 you are not in a buyzone
+		 *
+*/
+
+	SendToPlayer(buffer, stringsize, id, 1, writesocket);
+
 	free(buffer);
 }

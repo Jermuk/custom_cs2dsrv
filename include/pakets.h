@@ -10,6 +10,8 @@
 #define PAKETS_H_INCLUDED
 
 #include "main.h"
+//#include ""
+
 int unknown(unsigned char *message, int length, unsigned char *buffer,
 		int size, int position);
 int connection_setup_unknown(unsigned char *message, int length,
@@ -29,8 +31,7 @@ int posupdatewalk(unsigned char *message, int length, int id, int writesocket);
 int posupdaterun(unsigned char *message, int length, int id, int writesocket);
 int posrotupdatewalk(unsigned char *message, int length, int id,
 		int writesocket);
-int
-		posrotupdaterun(unsigned char *message, int length, int id,
+int posrotupdaterun(unsigned char *message, int length, int id,
 				int writesocket);
 int respawnrequest(unsigned char *message, int length, int id, int writesocket);
 int weaponchange(unsigned char *message, int length, int id, int writesocket);
@@ -47,4 +48,5 @@ int joinroutine_known(unsigned char *message, int length, int id,
 		int writesocket);
 int leave(int id, int writesocket);
 int reload(unsigned char *message, int length, int id, int writesocket);
+int spray(unsigned char *message, int length, int id, int writesocket);
 #endif // PAKETS_H_INCLUDED

@@ -333,12 +333,13 @@ int OnHit(int hitter, int victim, int writesocket)
 
 int OnBuyAttempt(int id, int wpnid, int writesocket)
 {
-	if (player[id].money - weapons[wpnid].price >= 0)
+
+	int i;
+	for (i = 0; i <= 99; i++)
 	{
-		int i;
-		for (i = 0; i <= 99; i++)
+		if (weapons[wpnid].name != NULL) //test if weapon available
 		{
-			if (weapons[wpnid].name != NULL) //test if weapon available
+			if (player[id].money - weapons[wpnid].price >= 0)
 			{
 				if (weapons[wpnid].team == 0 || weapons[wpnid].team
 						== player[id].team) //Check if he is in the right team to buy this weapon
@@ -361,6 +362,8 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 								return 0;
 							}
 						}
+						SendBuyFailedMessage(id, 255, writesocket);
+						return 1;
 					}
 					else if (player[id].team == 2)
 					{
@@ -379,11 +382,41 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 								return 0;
 							}
 						}
+						SendBuyFailedMessage(id, 255, writesocket);
+						return 1;
 					}
 				}
+				else
+				{
+					SendBuyFailedMessage(id, 252, writesocket);
+					return 1;
+				}
+			}
+			else
+			{
+				SendBuyFailedMessage(id, 253, writesocket);
+				return 1;
 			}
 		}
 	}
+	//if nothing found
+	SendBuyFailedMessage(id, 244, writesocket);
+	/*
+	 * 242 nothing
+	 * 243 Grenade rebuying is not allowed at this server
+	 * 244 it's not allowed to buy that weapon at this server
+	 * 245 you can't carry more of this
+	 * 246 you can't carry more of this
+	 * 247 you can't carry an additional weapon
+	 * 248 you can't buy more ammo
+	 * 249 you are not allowed to buy anything
+	 * 250 buying is not allowed
+	 * 251 you have already this or something better
+	 * 252 you can't buy this item;
+	 * 253 insufficient fund;
+	 * 254 buytime passed;
+	 * 255 you are not in a buyzone
+	 */
 	return 1;
 }
 

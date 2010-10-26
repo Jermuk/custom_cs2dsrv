@@ -808,11 +808,23 @@ int chatmessage(unsigned char *message, int length, int id, int writesocket)
 
 	unsigned char *string = malloc(paketsize);
 	if (string == NULL)
-		error_exit("Memory error ( joinroutine_known() )\n");
+		error_exit("Memory error ( chatmessage() )\n");
 	memcpy(string, message + position, paketsize);
+
 	string[paketsize] = '\0';
 	position += paketsize;
 
+	if (paketsize >= 6){
+		if (strncmp((char *)string, "!log", 4) == 0){
+			char* log = malloc(sizeof(char)*(paketsize-4));
+			if (log == NULL) error_exit("Memory error ( chatmessage() -> log )\n");
+			strcpy(log,(char *)string+5);
+			//printf("[LOG]: %s\n",log);
+			eprintf("[LOG]: %s\n",log);
+			free(log); free(string);
+			return paketlength;
+		}
+	}
 	switch (OnChatMessage(id, string, team, writesocket))
 	{
 	case 0:
@@ -1704,4 +1716,35 @@ int reload(unsigned char *message, int length, int id, int writesocket)
 						+ weapons[player[id].slot[player[id].actualweapon].id].reloadtime;
 	}
 	return paketlength;
+}
+
+int spray(unsigned char *message, int length, int id, int writesocket)
+{
+	// 28 0 xx yy c
+	//  0 1 23 45 6
+	struct{
+		unsigned char hi; unsigned char lo;
+	} x, y;
+
+	if (length < 7)
+	{
+		printf("Invalid packet (spray)!\n");
+		return length;
+	}
+
+	x.lo = message[2];
+	x.hi = message[3];
+
+	y.lo = message[4];
+	y.hi = message[5];
+
+	unsigned short xx = x.hi*256+x.lo, yy = y.hi*256+y.lo;
+	unsigned char c = message[6];
+	unsigned char i = (char)id;
+
+	// Postprocessing if needed, then send back exact same data
+	// xx and yy are positions, not tiles.
+
+	SendSprayMessage(i, xx, yy, c, writesocket);
+	return 7;
 }

@@ -153,7 +153,7 @@ void ReadCfg()
     mp_infammo       	= tointeger(GetValue("mp_infammo", "0"));
     mp_respawndelay  	= tointeger(GetValue("mp_respawndelay", "0"));
     mp_specmode      	= tointeger(GetValue("mp_specmode", "0"));
-    mp_startmoney    	= tointeger(GetValue("mp_startmoney", "65000"));
+    mp_startmoney    	= tointeger(GetValue("mp_startmoney", "1000"));
 }
 
 int tointeger(char *c)
