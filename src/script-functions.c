@@ -379,7 +379,16 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 									&& playery >= tempy - 64 && playery
 									<= tempy + 64)
 							{
-								return 0;
+								int g;
+								for (g = 0; g <= 99; g++)
+								{
+									if(player[id].slot[player[id].actualweapon].id == wpnid)
+									{
+										return 0;
+									}
+								}
+								SendBuyFailedMessage(id, 251, writesocket); //You have it already
+								return 1;
 							}
 						}
 						SendBuyFailedMessage(id, 255, writesocket);
@@ -419,6 +428,7 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 	 */
 	return 1;
 }
+
 
 int OnBuy(int id, int wpnid, int writesocket)
 {

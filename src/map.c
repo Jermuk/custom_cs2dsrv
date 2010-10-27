@@ -198,19 +198,19 @@ unsigned char ReadByte(FILE *file)
  */
 int ReadInt(FILE *file)
 {
-	unsigned char byte1 = fgetc(file);
+	int byte1 = fgetc(file);
 	if (byte1 == EOF)
 		error_exit("EndOfFile in ReadInt()\n");
 
-	unsigned char byte2 = fgetc(file);
+	int byte2 = fgetc(file);
 	if (byte2 == EOF)
 		error_exit("EndOfFile in ReadInt()\n");
 
-	unsigned char byte3 = fgetc(file);
+	int byte3 = fgetc(file);
 	if (byte3 == EOF)
 		error_exit("EndOfFile in ReadInt()\n");
 
-	unsigned char byte4 = fgetc(file);
+	int byte4 = fgetc(file);
 	if (byte4 == EOF)
 		error_exit("EndOfFile in ReadInt()\n");
 

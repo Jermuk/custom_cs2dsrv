@@ -31,10 +31,10 @@ int main()
 	readsocket = create_socket();
 	bind_socket(&readsocket, INADDR_ANY, LOCAL_PORT);
 	atexit(cleanup);
-
+/*
 	FD_ZERO(&descriptor);
 	FD_SET(readsocket, &descriptor);
-
+*/
 	OnServerStart();
 	ReadMap();
 
@@ -43,18 +43,23 @@ int main()
 	 */
 	time_t firsttime;
 	time(&firsttime);
+
+	struct timeval timeout;
+	timeout.tv_sec = 0;
+	timeout.tv_usec = 1000; //1ms
 	while (1)
 	{
 		CheckForTimeout(readsocket);
 		PingAllPlayer(readsocket, &firsttime); /// also execute PingList()
 		CheckAllPlayerForReload(readsocket);
 
-		select(readsocket + 1, &descriptor, NULL, NULL, NULL);
+		FD_ZERO(&descriptor);
+		FD_SET(readsocket, &descriptor);
+		select(readsocket + 1, &descriptor, NULL, NULL, &timeout);
 
 		if (FD_ISSET(readsocket, &descriptor))
 		{
 			size = udp_recieve(readsocket, buffer, MAX_BUF, &newclient);
-			//printf("(Debug) Recieved data from %s:%d\n", inet_ntoa(newclient.sin_addr), newclient.sin_port);
 
 			if (size < 3)
 			{
