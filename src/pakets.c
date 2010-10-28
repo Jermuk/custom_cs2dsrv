@@ -814,20 +814,12 @@ int chatmessage(unsigned char *message, int length, int id, int writesocket)
 	string[paketsize] = '\0';
 	position += paketsize;
 
-	if (paketsize >= 6){
-		if (strncmp((char *)string, "!log", 4) == 0){
-			char* log = malloc(sizeof(char)*(paketsize-4));
-			if (log == NULL) error_exit("Memory error ( chatmessage() -> log )\n");
-			strcpy(log,(char *)string+5);
-			//printf("[LOG]: %s\n",log);
-			eprintf("[LOG]: %s\n",log);
-			free(log); free(string);
-			return paketlength;
-		}
-	}
 	switch (OnChatMessage(id, string, team, writesocket))
 	{
 	case 0:
+		SendChatMessage(id, string, team, writesocket);
+		break;
+	case 1:
 		break;
 	default:
 		printf("Unknown Return value for OnChatMessage()!\n");

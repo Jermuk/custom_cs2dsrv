@@ -117,14 +117,22 @@ void cleanup(void)
  * \return time in ms
  */
 
-int mtime(void)
+unsigned int mtime(void)
 {
 #ifdef _WIN32
-	return GetTickCount();
+	__int64 freq, value, value2;
+
+	QueryPerformanceFrequency((LARGE_INTEGER*)&freq);
+	QueryPerformanceCounter((LARGE_INTEGER*)&value);
+
+	value2 = (value * 1000) / freq;
+
+	unsigned int ms = (unsigned int)(value2 & 0xffffffff);
+	return ms;
 #else
 	struct timeval tv;
 	gettimeofday(&tv,NULL);
-	return (int)(tv.tv_sec*1000 + (tv.tv_usec / 1000));
+	return (unsigned int)(tv.tv_sec*1000 + (tv.tv_usec / 1000));
 #endif
 }
 

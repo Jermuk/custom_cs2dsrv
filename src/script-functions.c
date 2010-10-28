@@ -382,7 +382,8 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 								int g;
 								for (g = 0; g <= 99; g++)
 								{
-									if(player[id].slot[player[id].actualweapon].id == wpnid)
+									if (player[id].slot[player[id].actualweapon].id
+											== wpnid)
 									{
 										return 0;
 									}
@@ -429,7 +430,6 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 	return 1;
 }
 
-
 int OnBuy(int id, int wpnid, int writesocket)
 {
 	player[id].money -= weapons[wpnid].price;
@@ -454,9 +454,31 @@ int OnKill(int hitter, int victim, int wpnid, int writesocket)
  int OnChatMessage(int id, unsigned char *message, int team, int writesocket)
  Return Values:
  0 - OK
+ 1 - don't send it
  */
 int OnChatMessage(int id, unsigned char *message, int team, int writesocket)
 {
+	if (u_strlen(message) >= 4 && strncmp((char *) message, "!log", 4) == 0)
+	{
+		char* log = malloc(u_strlen(message) - 5 + 1);
+		if (log == NULL)
+			error_exit("Memory error ( OnChatMessage() -> log )\n");
+		strncpy(log, (char *) message + 5, u_strlen(message) - 5 + 1);
+		log[u_strlen(message) - 5 + 1] = '\0';
+		eprintf("[LOG]: %s\n",log);
+		free(log);
+
+		return 1;
+	}
+	else if (u_strlen(message) >= 4 && strncmp((char *) message, "!fps", 4)
+			== 0)
+	{
+		char buffer[30]; //Resulting stringlength unknown: Text = 24 chars
+		sprintf(buffer, "Actually server FPS: %d", fpsnow);
+		SendMessageToPlayer(id, buffer, 1, writesocket);
+		return 1;
+	}
+
 	if (team == 1)
 	{
 		printf("%s: %s\n", player[id].name, message);
@@ -465,7 +487,6 @@ int OnChatMessage(int id, unsigned char *message, int team, int writesocket)
 	{
 		printf("%s (Team): %s\n", player[id].name, message);
 	}
-	SendChatMessage(id, message, team, writesocket);
 	return 0;
 }
 

@@ -19,5 +19,5 @@ int udp_recieve(int socket, unsigned char *data, int length,
 		struct sockaddr_in *client);
 void udp_send(int socket, unsigned char *data, int length,
 		struct sockaddr_in *client);
-int mtime(void);
+unsigned int mtime(void);
 #endif // CROSS_LAYER_H_INCLUDED

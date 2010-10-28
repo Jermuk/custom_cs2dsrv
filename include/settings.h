@@ -18,6 +18,7 @@
 #define MAX_CLIENTS 64
 #define TIMEOUT 10
 #define SETTINGS_PATH "server.cfg"
+#define FPS 100
 
 extern unsigned char pre_authcode[];
 
@@ -40,6 +41,8 @@ extern unsigned short mp_respawndelay;
 extern unsigned short mp_specmode;
 extern unsigned short onlineplayer;
 extern unsigned short mp_startmoney;
+
+extern int fpsnow;
 
 #define STARTWEAPONS_COUNT 1
 extern char startweapons[];

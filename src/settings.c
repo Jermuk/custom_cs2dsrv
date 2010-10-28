@@ -10,6 +10,7 @@
 
 unsigned char pre_authcode[]    = "5TWs3Obv7";
 char startweapons[] = {50};
+int fpsnow = 0;
 
 unsigned char *sv_name 			= NULL;
 unsigned char *sv_map 			= NULL;
@@ -30,6 +31,7 @@ unsigned short mp_respawndelay  = 0;
 unsigned short mp_specmode      = 0;
 unsigned short onlineplayer     = 0;
 unsigned short mp_startmoney    = 0;
+
 
 
 struct setting
