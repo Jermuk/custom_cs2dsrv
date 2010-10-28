@@ -38,6 +38,7 @@ int main()
 	 */
 	OnServerStart();
 	ReadMap();
+	UsgnRegister(readsocket);
 
 	/**
 	 * \var needed for PingAllPlayer() to execute it every 5 sec

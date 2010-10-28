@@ -432,6 +432,12 @@ void CheckAllPlayerForReload(int writesocket)
 	}
 }
 
+int UsgnRegister(int writesocket)
+{
+
+	return 0;
+}
+
 size_t u_strlen(unsigned char* buffer)
 {
 	return strlen((char*) buffer);

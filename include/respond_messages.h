@@ -32,7 +32,7 @@ void SendTeamChangeMessage(int id, unsigned char team, unsigned char skin,
 void PingAllPlayer(int writesocket, time_t *firsttime);
 void SendReloadMessage(int id, int status, int writesocket);
 void SendSprayMessage(char id, unsigned short xx, unsigned short yy, char c, int writesocket);
-void SendKillMessage(int id, int writesocket);
+void SendKillMessage(int id, int victim, int writesocket);
 void SendPingList(int writesocket);
 void SendBuyFailedMessage(int id, int status, int writesocket);
 

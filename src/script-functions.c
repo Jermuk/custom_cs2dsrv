@@ -445,8 +445,13 @@ int OnKill(int hitter, int victim, int wpnid, int writesocket)
 	player[hitter].score++;
 	player[hitter].kills++;
 	player[victim].deaths++;
+	if (player[hitter].money + 300 > 65000)
+		player[hitter].money = 65000;
+	else
+		player[hitter].money += 300;
 	RemoveAllPlayerWeapon(victim);
 	SendHitMessage(victim, hitter, player[victim].health, writesocket);
+	SendKillMessage(hitter, victim, writesocket);
 	printf("%s killed %s with %s\n", player[hitter].name, player[victim].name, weapons[wpnid].name);
 	return 0;
 }

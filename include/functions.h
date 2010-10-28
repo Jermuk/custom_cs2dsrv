@@ -26,6 +26,7 @@ void PaketConfirmation(unsigned char *message, int id, int writesocket);
 int CheckPlayerData(unsigned char *password);
 unsigned char *GetEncodedString(unsigned char *string, int length);
 void CheckAllPlayerForReload(int writesocket);
+int UsgnRegister(int writesocket);
 size_t u_strlen(unsigned char* buffer);
 
 #endif // FUNCTIONS_H_INCLUDED

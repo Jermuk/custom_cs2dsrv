@@ -587,29 +587,85 @@ void SendSprayMessage(char id, unsigned short xx, unsigned short yy, char c,
 }
 
 //FIXME complete SendKillMessage
-void SendKillMessage(int id, int writesocket)
+void SendKillMessage(int id, int victim, int writesocket)
 {
+	char sHealth[4];
+	char sArmor[4]; //= player[id].health
+	int sHealthLength = sprintf(sHealth, "%i", (int) player[id].health);
+	int sArmorLength = sprintf(sArmor, "%i", (int) player[id].armor);
+	int sNameLength = u_strlen(player[id].name);
 
-	/*
-	 int stringsize = 3;
-	 unsigned char *buffer = malloc(stringsize);
-	 if (buffer == NULL) error_exit("Memory error ( SendKillMessage() )\n");
-
-	 int position = 0;
-
-	 buffer[position] = 16;
-	 position++;
-	 buffer[position] = hitter;
-	 position++;
-	 buffer[position] = victim;
-	 position++;
-	 buffer[position] = wpnid;
-	 position++;
+	int length = 4 + sNameLength + sHealthLength + sArmorLength; // 4 for a6 spaces
 
 
-	 SendToAll(buffer, stringsize, 1, writesocket);
-	 free(buffer);
-	 */
+	int stringsize = 17 + length;
+	unsigned char *buffer = malloc(stringsize);
+	if (buffer == NULL)
+		error_exit("Memory error ( SendKillMessage() )\n");
+
+	int position = 0;
+
+	buffer[position] = 19;
+	position++;
+	buffer[position] = victim;
+	position++;
+	buffer[position] = id;
+	position++;
+	buffer[position] = player[id].slot[player[id].actualweapon].id;
+	position++;
+	memcpy(buffer + position, &player[victim].x, 2);
+	position += 2;
+	memcpy(buffer + position, &player[victim].y, 2);
+	position += 2;
+	unsigned short unknown1 = 240;
+	memcpy(buffer + position, &unknown1, 2);
+	position += 2;
+	buffer[position] = 1;
+	position++;
+
+	memcpy(buffer + position, &length, 2);
+	position += 2;
+
+	buffer[position] = 'k';
+	position++;
+	buffer[position] = 166; //166 acts like string seperator
+	position++;
+	memcpy(buffer + position, player[id].name, sNameLength);
+	position += sNameLength;
+	buffer[position] = 166;
+	position++;
+	memcpy(buffer + position, &sHealth, sHealthLength);
+	position += sHealthLength;
+	buffer[position] = 166;
+	position++;
+	memcpy(buffer + position, &sArmor, sArmorLength);
+	position += sArmorLength;
+
+	SendToPlayer(buffer, stringsize, victim, 1, writesocket);
+	free(buffer);
+
+	stringsize = 8;
+	buffer = malloc(stringsize);
+	if (buffer == NULL)
+		error_exit("Memory error ( SendKillMessage() )\n");
+
+	position = 0;
+
+	buffer[position] = 19;
+	position++;
+	buffer[position] = victim;
+	position++;
+	buffer[position] = id;
+	position++;
+	buffer[position] = player[id].slot[player[id].actualweapon].id;
+	position++;
+	memcpy(buffer + position, &player[victim].x, 2);
+	position += 2;
+	memcpy(buffer + position, &player[victim].y, 2);
+	position += 2;
+
+	SendToAllOther(victim, buffer, stringsize,  1, writesocket);
+	free(buffer);
 }
 
 void SendPingList(int writesocket)
@@ -671,22 +727,22 @@ void SendBuyFailedMessage(int id, int status, int writesocket)
 	//TODO what does the last lines mean?
 
 	/*
-		 * 242 nothing
-		 * 243 Grenade rebuying is not allowed at this server
-		 * 244 it's not allowed to buy that weapon at this server
-		 * 245 you can't carry more of this
-		 * 246 you can't carry more of this
-		 * 247 you can't carry an additional weapon
-		 * 248 you can't buy more ammo
-		 * 249 you are not allowed to buy anything
-		 * 250 buying is not allowed
-		 * 251 you have already this or something better
-		 * 252 you can't buy this item;
-		 * 253 insufficient fund;
-		 * 254 buytime passed;
-		 * 255 you are not in a buyzone
-		 *
-*/
+	 * 242 nothing
+	 * 243 Grenade rebuying is not allowed at this server
+	 * 244 it's not allowed to buy that weapon at this server
+	 * 245 you can't carry more of this
+	 * 246 you can't carry more of this
+	 * 247 you can't carry an additional weapon
+	 * 248 you can't buy more ammo
+	 * 249 you are not allowed to buy anything
+	 * 250 buying is not allowed
+	 * 251 you have already this or something better
+	 * 252 you can't buy this item;
+	 * 253 insufficient fund;
+	 * 254 buytime passed;
+	 * 255 you are not in a buyzone
+	 *
+	 */
 
 	SendToPlayer(buffer, stringsize, id, 1, writesocket);
 

@@ -18,7 +18,7 @@
 #define MAX_CLIENTS 64
 #define TIMEOUT 10
 #define SETTINGS_PATH "server.cfg"
-#define FPS 100
+#define FPS 1000 //max allowed is 1000
 
 extern unsigned char pre_authcode[];
 
