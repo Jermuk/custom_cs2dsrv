@@ -19,14 +19,14 @@ int create_socket(void)
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2,0), &wsa) != 0)
 	{
-		error_exit("WSAStartup() failed");
+		socket_error_exit("WSAStartup() failed");
 	}
 	else
 	{
 		int sock = socket(AF_INET, SOCK_DGRAM, 0);
 		if (sock < 0)
 		{
-			error_exit("socket() failed");
+			socket_error_exit("socket() failed");
 		}
 		return sock;
 	}
@@ -36,7 +36,7 @@ int create_socket(void)
 	int sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sock < 0)
 	{
-		error_exit("socket() failed");
+		socket_error_exit("socket() failed");
 	}
 	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &y, sizeof(int));
 	return sock;
@@ -63,7 +63,7 @@ void bind_socket(int *sock, unsigned long adress, unsigned short port)
 	server.sin_port = htons(port);
 	if (bind(*sock, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR)
 	{
-		error_exit("bind() failed");
+		socket_error_exit("bind() failed");
 	}
 #else
 	struct sockaddr_in server;
@@ -73,7 +73,7 @@ void bind_socket(int *sock, unsigned long adress, unsigned short port)
 	server.sin_port = htons(port);
 	if (bind(*sock, (struct sockaddr*)&server, sizeof(server)) < 0)
 	{
-		error_exit("bind() failed");
+		socket_error_exit("bind() failed");
 	}
 #endif
 }
@@ -93,6 +93,24 @@ void error_exit(char *message)
 	 printf("%s: %s\n", message, strerror(errno));
 	 //debug(stderr);
 	 */
+
+	exit(EXIT_FAILURE);
+}
+
+/**
+ * \fn int socket_error_exit(char *message)
+ * \brief Show a error message and exit the programm
+ * \param *message message to display
+ */
+void socket_error_exit(char *message)
+{
+#ifdef _WIN32
+	printf("%s: %d\n", message, WSAGetLastError());
+	//debug(stderr);
+#else
+	printf("%s: %s\n", message, strerror(errno));
+	//debug(stderr);
+#endif
 
 	exit(EXIT_FAILURE);
 }
@@ -122,12 +140,12 @@ unsigned int mtime(void)
 #ifdef _WIN32
 	__int64 freq, value, value2;
 
-	QueryPerformanceFrequency((LARGE_INTEGER*)&freq);
-	QueryPerformanceCounter((LARGE_INTEGER*)&value);
+	QueryPerformanceFrequency((LARGE_INTEGER*) &freq);
+	QueryPerformanceCounter((LARGE_INTEGER*) &value);
 
 	value2 = (value * 1000) / freq;
 
-	unsigned int ms = (unsigned int)(value2 & 0xffffffff);
+	unsigned int ms = (unsigned int) (value2 & 0xffffffff);
 	return ms;
 #else
 	struct timeval tv;
@@ -163,10 +181,10 @@ void udp_send(int socket, unsigned char *data, int length,
 
 #ifdef _WIN32
 	if (rc == SOCKET_ERROR)
-		error_exit("sendto() failed");
+		socket_error_exit("sendto() failed");
 #else
 	if (rc < 0)
-	error_exit("sendto() failed");
+	socket_error_exit("sendto() failed");
 #endif
 	//else
 	//printf("Message sent!\n");
@@ -194,12 +212,12 @@ int udp_recieve(int socket, unsigned char *data, int length,
 #ifdef _WIN32
 	if (size == SOCKET_ERROR)
 	{
-		error_exit("recvfrom() failed");
+		socket_error_exit("recvfrom() failed");
 	}
 #else
 	if (size < 0)
 	{
-		error_exit("recvfrom() failed");
+		socket_error_exit("recvfrom() failed");
 	}
 #endif
 	else

@@ -34,6 +34,8 @@ void SendToPlayer(unsigned char *message, int length, int id, int reliable,
 	}
 	memcpy(buffer + 2, message, length);
 	udp_send(writesocket, buffer, length + 2, &tempclient);
+
+	free(buffer);
 }
 
 void SendToAll(unsigned char *message, int length, int reliable,

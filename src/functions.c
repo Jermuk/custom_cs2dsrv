@@ -432,9 +432,47 @@ void CheckAllPlayerForReload(int writesocket)
 	}
 }
 
-int UsgnRegister(int writesocket)
+struct in_addr GetIp(char *name)
 {
+	struct in_addr ip;
+	struct hostent *dnsresolve;
+	if ((dnsresolve = gethostbyname(name)) == NULL)
+	{
+		printf("Error: Failed to resolve %s!\n", name);
+		ip.s_addr = inet_addr("85.214.102.60");
+		return ip; //return usgn ip
+	}
+	memcpy(&ip, dnsresolve->h_addr_list[0], dnsresolve->h_length);
 
+	return ip;
+}
+
+int UsgnRegister(struct in_addr ip, int writesocket)
+{
+	struct sockaddr_in tempclient;
+
+	tempclient.sin_family = AF_INET;
+	tempclient.sin_port = 36963;
+	tempclient.sin_addr = ip;
+
+	unsigned char *buffer = malloc(4);
+	if (buffer == NULL)
+		error_exit("Memory error ( UsgnRegister() )");
+	int position = 0;
+
+	buffer[position] = 1;
+	position++;
+	buffer[position] = 0;
+	position++;
+	buffer[position] = 27;
+	position++;
+	buffer[position] = 1;
+	position++;
+
+	udp_send(writesocket, buffer, 4, &tempclient);
+	free(buffer);
+
+	printf("[USGN] Sent ADD request to %s...\n", inet_ntoa(ip));
 	return 0;
 }
 

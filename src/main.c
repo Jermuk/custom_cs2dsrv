@@ -32,13 +32,15 @@ int main()
 	readsocket = create_socket();
 	bind_socket(&readsocket, INADDR_ANY, LOCAL_PORT);
 	atexit(cleanup);
+
+	struct in_addr usgnip = GetIp("usgn.de");
 	/*
 	 FD_ZERO(&descriptor);
 	 FD_SET(readsocket, &descriptor);
 	 */
 	OnServerStart();
 	ReadMap();
-	UsgnRegister(readsocket);
+	//UsgnRegister(usgnip, readsocket);
 
 	/**
 	 * \var needed for PingAllPlayer() to execute it every 5 sec
@@ -221,6 +223,18 @@ int main()
 							}
 						}
 					}
+					/*
+					else if(!strcmp(inet_ntoa(usgnip), inet_ntoa(newclient.sin_addr)))
+					{
+						printf("[USGN] Message recieved: ");
+						int i;
+						for(i = 0; i < size; i++)
+						{
+							eprintf("%d-", buffer[i]);
+						}
+						eprintf("\n");
+					}
+					*/
 					else
 					{
 						int control = 1;
@@ -287,7 +301,11 @@ int main()
 		}
 		else
 		{
+#ifdef _WIN32
 			Sleep(fps - (mtime() - mstime));
+#else
+			sleep(fps - (mtime() - mstime));
+#endif
 		}
 	}
 	return EXIT_SUCCESS;
