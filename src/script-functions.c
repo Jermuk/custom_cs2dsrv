@@ -56,6 +56,7 @@ int OnServerStart()
 	time_t rawtime;
 	time(&rawtime);
 	printf("********** Server started **********\n");
+	printf("Listening at port %d and using name '%s'\n", sv_hostport, sv_name);
 	printf("%s", ctime(&rawtime));
 	return 0;
 }
@@ -465,11 +466,11 @@ int OnChatMessage(int id, unsigned char *message, int team, int writesocket)
 {
 	if (u_strlen(message) >= 4 && strncmp((char *) message, "!log", 4) == 0)
 	{
-		char* log = malloc(u_strlen(message) - 5 + 1);
+		char* log = malloc(u_strlen(message) - 5 + 1); //+1 for '\0'
 		if (log == NULL)
 			error_exit("Memory error ( OnChatMessage() -> log )\n");
-		strncpy(log, (char *) message + 5, u_strlen(message) - 5 + 1);
-		log[u_strlen(message) - 5 + 1] = '\0';
+		strncpy(log, (char *) message + 5, u_strlen(message) - 5);
+		log[u_strlen(message) - 5] = '\0';
 		eprintf("[LOG]: %s\n",log);
 		free(log);
 

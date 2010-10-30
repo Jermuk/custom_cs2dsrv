@@ -497,48 +497,38 @@ void SendTeamChangeMessage(int id, unsigned char team, unsigned char skin,
 	free(buffer);
 }
 
-void PingAllPlayer(int writesocket, time_t *firsttime)
+void PingAllPlayer(int writesocket)
 {
-	time_t actualtime;
-	time(&actualtime);
-	if (actualtime >= (*firsttime + 5))
+	int i;
+	for (i = 1; i <= sv_maxplayers; i++)
 	{
-		*firsttime = actualtime;
-		SendPingList(writesocket);
-
-		SendMessageToAll("This is an alpha version! Don't play at it!", 1,
-				writesocket); //Do not remove or change this until server reaches beta status
-		int i;
-		for (i = 1; i <= sv_maxplayers; i++)
+		if (player[i].used == 1 && player[i].joinstatus >= 4)
 		{
-			if (player[i].used == 1 && player[i].joinstatus >= 4)
-			{
-				int stringsize = 5;
-				unsigned char *buffer = malloc(stringsize);
-				if (buffer == NULL)
-					error_exit("Memory error ( SendJoinMessage() )\n");
+			int stringsize = 5;
+			unsigned char *buffer = malloc(stringsize);
+			if (buffer == NULL)
+				error_exit("Memory error ( SendJoinMessage() )\n");
 
-				int position = 0;
+			int position = 0;
 
-				buffer[position] = 249;
-				position++;
-				buffer[position] = 0;
-				position++;
-				buffer[position] = 32;
-				position++;
-				buffer[position] = 191;
-				position++;
-				buffer[position] = 0;
-				position++;
+			buffer[position] = 249;
+			position++;
+			buffer[position] = 0;
+			position++;
+			buffer[position] = 32;
+			position++;
+			buffer[position] = 191;
+			position++;
+			buffer[position] = 0;
+			position++;
 
-				player[i].start = mtime();
+			player[i].start = mtime();
 
-				SendToPlayer(buffer, stringsize, i, 0, writesocket);
+			SendToPlayer(buffer, stringsize, i, 0, writesocket);
 
-				free(buffer);
-			}
-
+			free(buffer);
 		}
+
 	}
 }
 
@@ -664,7 +654,7 @@ void SendKillMessage(int id, int victim, int writesocket)
 	memcpy(buffer + position, &player[victim].y, 2);
 	position += 2;
 
-	SendToAllOther(victim, buffer, stringsize,  1, writesocket);
+	SendToAllOther(victim, buffer, stringsize, 1, writesocket);
 	free(buffer);
 }
 

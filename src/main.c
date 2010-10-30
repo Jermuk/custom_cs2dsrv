@@ -6,7 +6,6 @@
  * Author/s of this file: Jermuk
  */
 
-
 #include "../include/main.h"
 
 /**
@@ -33,25 +32,25 @@ int main()
 	bind_socket(&readsocket, INADDR_ANY, LOCAL_PORT);
 	atexit(cleanup);
 
-	struct in_addr usgnip = GetIp("usgn.de");
+	//struct in_addr usgnip = GetIp("usgn.de");
 	/*
 	 FD_ZERO(&descriptor);
 	 FD_SET(readsocket, &descriptor);
 	 */
 	OnServerStart();
 	ReadMap();
-	//UsgnRegister(usgnip, readsocket);
+	UsgnRegister(readsocket);
 
 	/**
-	 * \var needed for PingAllPlayer() to execute it every 5 sec
+	 * \var needed for ExecuteFunctionsWithTime()
 	 */
-	time_t firsttime;
-	time(&firsttime);
+	time_t checktime;
+	time(&checktime);
 
 	int mstime = mtime();
 	int timecounter = mtime();
 	int tickcounter = 0;
-	const int fps = 1000/FPS;
+	const int fps = 1000 / FPS;
 
 	struct timeval timeout;
 	timeout.tv_sec = 0;
@@ -60,9 +59,9 @@ int main()
 	{
 		if (mtime() - mstime >= fps) //Hope it does an constant fps
 		{
-			if ((timecounter+10000 - (int)mtime()) <= 0)
+			if ((timecounter + 10000 - (int) mtime()) <= 0)
 			{
-				fpsnow = (int)ceil(tickcounter/10);
+				fpsnow = (int) ceil(tickcounter / 10);
 				tickcounter = 0;
 				timecounter = mtime();
 			}
@@ -70,7 +69,7 @@ int main()
 			mstime = mtime();
 
 			CheckForTimeout(readsocket);
-			PingAllPlayer(readsocket, &firsttime); /// also execute PingList()
+			ExecuteFunctionsWithTime(&checktime, readsocket);
 			CheckAllPlayerForReload(readsocket);
 
 			FD_ZERO(&descriptor);
@@ -94,7 +93,7 @@ int main()
 						if (ValidatePaket(buffer, id)) ///Checks and raise the packet numbering if necessary
 						{
 							PaketConfirmation(buffer, id, readsocket); ///If the numbering is even, send a confirmation
-							time(&player[id].lastpaket);
+							player[id].lastpaket = mtime();
 							int control = 1;
 							int position = 2;
 							/**
@@ -223,18 +222,6 @@ int main()
 							}
 						}
 					}
-					/*
-					else if(!strcmp(inet_ntoa(usgnip), inet_ntoa(newclient.sin_addr)))
-					{
-						printf("[USGN] Message recieved: ");
-						int i;
-						for(i = 0; i < size; i++)
-						{
-							eprintf("%d-", buffer[i]);
-						}
-						eprintf("\n");
-					}
-					*/
 					else
 					{
 						int control = 1;
@@ -258,6 +245,12 @@ int main()
 								rtn = connection_setup_unknown(message,
 										tempsize, newclient.sin_addr,
 										newclient.sin_port);
+								break;
+							case 27:
+								rtn = UsgnPacket(27, message, tempsize, readsocket);
+								break;
+							case 28:
+								rtn = UsgnPacket(28, message, tempsize, readsocket);
 								break;
 							case 250:
 								rtn = ping_serverlist(message, tempsize,

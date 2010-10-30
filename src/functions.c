@@ -190,10 +190,9 @@ int PlayerTimeout(int id)
 {
 	//id = 0;
 
-	time_t actualtime;
-	time(&actualtime);
+	int actualtime = mtime();
 
-	if (((player[id].lastpaket + TIMEOUT) < actualtime) && player[id].lastpaket
+	if (((player[id].lastpaket + TIMEOUT*1000) < actualtime) && player[id].lastpaket
 			!= 0)
 	{
 		return 1;
@@ -277,16 +276,19 @@ unsigned int endian_swap_int(unsigned int *x)
  */
 int ValidatePaket(unsigned char *message, int id)
 {
-	unsigned short *pTempNummer = malloc(sizeof(unsigned short));
+	/*
+	unsigned short *pTempNummer = malloc(2);
 	pTempNummer[0] = message[0];
 	pTempNummer[1] = message[1];
+	*/
+	unsigned short *pTempNummer = (unsigned short *)message;
 	if (*pTempNummer % 2 != 0)
 	{
 		if (((*pTempNummer) + 2) < player[id].client_nummer || (*pTempNummer)
 				> (player[id].client_nummer + 2))
 		{
 			printf("Invalid paket! (Bad index: %d; expected: %d)\n", *pTempNummer, player[id].client_nummer);
-			free(pTempNummer);
+			//free(pTempNummer);
 			return 0;
 		}
 	}
@@ -299,7 +301,7 @@ int ValidatePaket(unsigned char *message, int id)
 	 pNummer[0] = buffer[0];
 	 pNummer[1] = buffer[1];
 	 */
-	free(pTempNummer);
+	//free(pTempNummer);
 	return 1;
 }
 /**
@@ -310,9 +312,12 @@ int ValidatePaket(unsigned char *message, int id)
  */
 void PaketConfirmation(unsigned char *message, int id, int writesocket)
 {
+	unsigned short *pTempNummer = (unsigned short *)message;
+	/*
 	unsigned short *pTempNummer = malloc(sizeof(unsigned short));
 	pTempNummer[0] = message[0];
 	pTempNummer[1] = message[1];
+	*/
 	if (*pTempNummer % 2 == 0)
 	{
 		int stringsize = 3;
@@ -324,7 +329,7 @@ void PaketConfirmation(unsigned char *message, int id, int writesocket)
 
 		free(buffer);
 	}
-	free(pTempNummer);
+	//free(pTempNummer);
 }
 /**
  * \fn int CheckPlayerData(char *password)
@@ -447,13 +452,13 @@ struct in_addr GetIp(char *name)
 	return ip;
 }
 
-int UsgnRegister(struct in_addr ip, int writesocket)
+int UsgnRegister(int writesocket)
 {
 	struct sockaddr_in tempclient;
 
 	tempclient.sin_family = AF_INET;
-	tempclient.sin_port = 36963;
-	tempclient.sin_addr = ip;
+	tempclient.sin_port = htons(36963);
+	tempclient.sin_addr = GetIp("usgn.de");
 
 	unsigned char *buffer = malloc(4);
 	if (buffer == NULL)
@@ -472,8 +477,58 @@ int UsgnRegister(struct in_addr ip, int writesocket)
 	udp_send(writesocket, buffer, 4, &tempclient);
 	free(buffer);
 
-	printf("[USGN] Sent ADD request to %s...\n", inet_ntoa(ip));
+	printf("[USGN] Sent ADD request to %s...\n", inet_ntoa(tempclient.sin_addr));
 	return 0;
+}
+
+int UsgnUpdate(int writesocket)
+{
+	struct sockaddr_in tempclient;
+
+	tempclient.sin_family = AF_INET;
+	tempclient.sin_port = htons(36963);
+	tempclient.sin_addr = GetIp("usgn.de");
+
+	unsigned char *buffer = malloc(4);
+	if (buffer == NULL)
+		error_exit("Memory error ( UsgnRegister() )");
+	int position = 0;
+
+	buffer[position] = 1;
+	position++;
+	buffer[position] = 0;
+	position++;
+	buffer[position] = 28;
+	position++;
+	buffer[position] = 2;
+	position++;
+
+	udp_send(writesocket, buffer, 4, &tempclient);
+	free(buffer);
+
+	printf("[USGN] Sent UPDATE request to %s...\n", inet_ntoa(tempclient.sin_addr));
+	return 0;
+}
+
+void ExecuteFunctionsWithTime(time_t *checktime, int writesocket)
+{
+	time_t actualtime;
+	time(&actualtime);
+	if (*checktime != actualtime) //prevents executing more times than one in a second
+	{
+		if (actualtime % 5 == 0) //execute every 5 seconds
+		{
+			SendPingList(writesocket);
+			SendMessageToAll("This is an alpha version! Don't play at it!", 1,
+					writesocket); //Do not remove or change this until server reaches beta status
+			PingAllPlayer(writesocket);
+		}
+		else if (actualtime % 50 == 0)
+		{
+			UsgnUpdate(writesocket);
+		}
+		*checktime = actualtime;
+	}
 }
 
 size_t u_strlen(unsigned char* buffer)

@@ -56,7 +56,7 @@ struct PLAYER
 	int used;
 	unsigned short client_nummer;
 	unsigned short server_nummer;
-	time_t lastpaket;
+	int lastpaket;
 	unsigned short joinstatus;
 
 	unsigned char *name;
