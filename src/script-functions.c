@@ -115,7 +115,7 @@ int OnWeaponChangeAttempt(int id, int wpnid, int writesocket)
 			}
 			player[id].reloading = 0;
 
-			printf("%s switched to %s\n", player[id].name, weapons[player[id].slot[player[id].actualweapon].id].name);
+			//printf("%s switched to %s\n", player[id].name, weapons[player[id].slot[player[id].actualweapon].id].name);
 			return 0;
 		}
 	}
@@ -322,7 +322,7 @@ int OnHit(int hitter, int victim, int writesocket)
 	{
 		player[victim].health -= damage;
 		SendHitMessage(victim, hitter, player[victim].health, writesocket);
-		printf("%s hitted %s with %s\n", player[hitter].name, player[victim].name, weapons[wpnid].name);
+		//printf("%s hitted %s with %s\n", player[hitter].name, player[victim].name, weapons[wpnid].name);
 	}
 	else
 	{
@@ -334,7 +334,6 @@ int OnHit(int hitter, int victim, int writesocket)
 
 int OnBuyAttempt(int id, int wpnid, int writesocket)
 {
-
 	int i;
 	for (i = 0; i <= 99; i++)
 	{
@@ -360,7 +359,16 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 									&& playery >= tempy - 64 && playery
 									<= tempy + 64)
 							{
-								return 0;
+								int g;
+								for (g = 0; g <= 99; g++)
+								{
+									if (player[id].slot[g].id != wpnid)
+									{
+										return 0;
+									}
+								}
+								SendBuyFailedMessage(id, 251, writesocket); //You have it already
+								return 1;
 							}
 						}
 						SendBuyFailedMessage(id, 255, writesocket);
@@ -383,8 +391,7 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 								int g;
 								for (g = 0; g <= 99; g++)
 								{
-									if (player[id].slot[player[id].actualweapon].id
-											== wpnid)
+									if (player[id].slot[g].id != wpnid)
 									{
 										return 0;
 									}
@@ -393,19 +400,19 @@ int OnBuyAttempt(int id, int wpnid, int writesocket)
 								return 1;
 							}
 						}
-						SendBuyFailedMessage(id, 255, writesocket);
+						SendBuyFailedMessage(id, 255, writesocket); //Not in a buyzone
 						return 1;
 					}
 				}
 				else
 				{
-					SendBuyFailedMessage(id, 252, writesocket);
+					SendBuyFailedMessage(id, 252, writesocket); //you cant buy this item
 					return 1;
 				}
 			}
 			else
 			{
-				SendBuyFailedMessage(id, 253, writesocket);
+				SendBuyFailedMessage(id, 253, writesocket); //not enough money
 				return 1;
 			}
 		}

@@ -704,7 +704,7 @@ void SendBuyFailedMessage(int id, int status, int writesocket)
 	int position = 0;
 	buffer[position] = 23;
 	position++;
-	buffer[position] = 1;
+	buffer[position] = id;
 	position++;
 	buffer[position] = status;
 	position++;
