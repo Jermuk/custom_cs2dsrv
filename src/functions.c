@@ -3,10 +3,29 @@
  * For more information take a look at the Readme
  * Copyright (c) by the authors of this file
  *
- * Author/s of this file: Jermuk
+ * Author/s of this file: Jermuk, FloooD
  */
 
 #include "../include/functions.h"
+
+/**
+ * \fn void UpdateBuffer(void)
+ * \brief update old player locations
+ */
+void UpdateBuffer(void)
+{
+	int id, i;
+	for (id = 1; id < (MAX_CLIENTS); id++)
+	{
+			for (i = sv_lcbuffer; i >= 1; i--)
+			{
+				player[id].buffer_x[i] = player[id].buffer_x[i - 1];
+				player[id].buffer_y[i] = player[id].buffer_y[i - 1];
+			}
+			player[id].buffer_x[0] = player[id].x;
+			player[id].buffer_y[0] = player[id].y;
+	}
+}
 
 /**
  * \fn int IsPlayerKnown(struct in_addr ip, u_short port)
@@ -71,6 +90,11 @@ void ClearPlayer(int id)
 	for (i = 0; i <= 9; i++)
 	{
 		player[id].slot[i].id = 0;
+	}
+	for (i = 0; i <= sv_lcbuffer; i++)
+	{
+		player[id].buffer_x[i] = 0;
+		player[id].buffer_y[i] = 0;
 	}
 	player[id].rotation = 0;
 

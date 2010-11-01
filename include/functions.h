@@ -10,6 +10,7 @@
 #define FUNCTIONS_H_INCLUDED
 
 #include "main.h"
+void UpdateBuffer(void);
 int IsPlayerKnown(struct in_addr ip, u_short port);
 void ClearPlayer(int id);
 void ClearAllPlayer(void);

@@ -3,7 +3,7 @@
  * For more information take a look at the Readme
  * Copyright (c) by the authors of this file
  *
- * Author/s of this file: Jermuk, GuccaGucca
+ * Author/s of this file: Jermuk, GuccaGucca, FloooD
  */
 
 #include "../include/settings.h"
@@ -16,6 +16,8 @@ unsigned char *sv_name 			= NULL;
 unsigned char *sv_map 			= NULL;
 unsigned int sv_hostport        = 0;
 unsigned short sv_maxplayers    = 0;
+unsigned short sv_fps		    = 0;
+unsigned short sv_lcbuffer	    = 0;
 unsigned short sv_fow           = 0;
 unsigned short sv_gamemode      = 0;
 unsigned short sv_friendlyfire  = 0;
@@ -31,6 +33,7 @@ unsigned short mp_respawndelay  = 0;
 unsigned short mp_specmode      = 0;
 unsigned short onlineplayer     = 0;
 unsigned short mp_startmoney    = 0;
+unsigned short mp_dmspawnmoney	= 0;
 
 
 
@@ -142,6 +145,8 @@ void ReadCfg()
     sv_map 				= (unsigned char *)GetValue("sv_map", "de_cs2d");
     sv_hostport 		= tointeger(GetValue("sv_hostport", "36963"));
     sv_maxplayers 		= tointeger(GetValue("sv_maxplayers", "32")) +1;
+	sv_fps 				= tointeger(GetValue("sv_fps", "250"));
+    sv_lcbuffer 		= tointeger(GetValue("sv_lcbuffer", "100"));
     sv_fow 				= tointeger(GetValue("sv_fow", "0"));
     sv_gamemode      	= tointeger(GetValue("sv_gamemode", "2"));
     sv_friendlyfire  	= tointeger(GetValue("sv_friendlyfire", "0"));
@@ -156,6 +161,7 @@ void ReadCfg()
     mp_respawndelay  	= tointeger(GetValue("mp_respawndelay", "0"));
     mp_specmode      	= tointeger(GetValue("mp_specmode", "0"));
     mp_startmoney    	= tointeger(GetValue("mp_startmoney", "1000"));
+    mp_dmspawnmoney    	= tointeger(GetValue("mp_dmspawnmoney", "32000"));
 }
 
 int tointeger(char *c)

@@ -3,7 +3,7 @@
  * For more information take a look at the Readme
  * Copyright (c) by the authors of this file
  *
- * Author/s of this file: Jermuk
+ * Author/s of this file: Jermuk, FloooD
  */
 
 #include "../include/script-functions.h"
@@ -81,7 +81,11 @@ int OnExit()
 int OnRespawnRequest(int id, int writesocket)
 {
 	if (player[id].dead == 1)
+	{
+		if(player[id].money + mp_dmspawnmoney > 65000) player[id].money = 65000;
+		else player[id].money += mp_dmspawnmoney;
 		return 0;
+	}
 	else
 		return 1;
 }
@@ -237,6 +241,11 @@ int OnFire(int id, int writesocket)
 
 	int startx = player[id].x;
 	int starty = player[id].y;
+	int frames = fpsnow * player[id].latency / 1000;
+	if (frames > sv_lcbuffer)
+	{
+		frames = sv_lcbuffer;
+	}
 	float rotx;
 	float roty;
 	float temprot = player[id].rotation;
@@ -282,9 +291,12 @@ int OnFire(int id, int writesocket)
 					&& player[b].dead == 0 && playershit[b] == 0
 					&& player[id].team != player[b].team)
 			{
-				if (sqrt((player[b].x - startx) * (player[b].x - startx)
-						+ (player[b].y - starty) * (player[b].y - starty))
+				if (sqrt((player[b].buffer_x[frames] - startx)*(player[b].buffer_x[frames] - startx)
+						+ (player[b].buffer_y[frames] - starty)*(player[b].buffer_y[frames] - starty))
 						<= 16)
+				/*if (sqrt((player[b].x - startx) * (player[b].x - startx)
+						+ (player[b].y - starty) * (player[b].y - starty))
+						<= 16)*/
 				{
 					OnHit(id, b, writesocket);
 					playershit[b] = 1;
