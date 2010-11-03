@@ -17,13 +17,13 @@ void UpdateBuffer(void)
 	int id, i;
 	for (id = 1; id < (MAX_CLIENTS); id++)
 	{
-			for (i = sv_lcbuffer; i >= 1; i--)
-			{
-				player[id].buffer_x[i] = player[id].buffer_x[i - 1];
-				player[id].buffer_y[i] = player[id].buffer_y[i - 1];
-			}
-			player[id].buffer_x[0] = player[id].x;
-			player[id].buffer_y[0] = player[id].y;
+		for (i = sv_lcbuffer; i >= 1; i--)
+		{
+			player[id].buffer_x[i] = player[id].buffer_x[i - 1];
+			player[id].buffer_y[i] = player[id].buffer_y[i - 1];
+		}
+		player[id].buffer_x[0] = player[id].x;
+		player[id].buffer_y[0] = player[id].y;
 	}
 }
 
@@ -216,8 +216,8 @@ int PlayerTimeout(int id)
 
 	int actualtime = mtime();
 
-	if (((player[id].lastpaket + TIMEOUT*1000) < actualtime) && player[id].lastpaket
-			!= 0)
+	if (((player[id].lastpaket + TIMEOUT * 1000) < actualtime)
+			&& player[id].lastpaket != 0)
 	{
 		return 1;
 	}
@@ -301,11 +301,11 @@ unsigned int endian_swap_int(unsigned int *x)
 int ValidatePaket(unsigned char *message, int id)
 {
 	/*
-	unsigned short *pTempNummer = malloc(2);
-	pTempNummer[0] = message[0];
-	pTempNummer[1] = message[1];
-	*/
-	unsigned short *pTempNummer = (unsigned short *)message;
+	 unsigned short *pTempNummer = malloc(2);
+	 pTempNummer[0] = message[0];
+	 pTempNummer[1] = message[1];
+	 */
+	unsigned short *pTempNummer = (unsigned short *) message;
 	if (*pTempNummer % 2 != 0)
 	{
 		if (((*pTempNummer) + 2) < player[id].client_nummer || (*pTempNummer)
@@ -336,12 +336,12 @@ int ValidatePaket(unsigned char *message, int id)
  */
 void PaketConfirmation(unsigned char *message, int id, int writesocket)
 {
-	unsigned short *pTempNummer = (unsigned short *)message;
+	unsigned short *pTempNummer = (unsigned short *) message;
 	/*
-	unsigned short *pTempNummer = malloc(sizeof(unsigned short));
-	pTempNummer[0] = message[0];
-	pTempNummer[1] = message[1];
-	*/
+	 unsigned short *pTempNummer = malloc(sizeof(unsigned short));
+	 pTempNummer[0] = message[0];
+	 pTempNummer[1] = message[1];
+	 */
 	if (*pTempNummer % 2 == 0)
 	{
 		int stringsize = 3;

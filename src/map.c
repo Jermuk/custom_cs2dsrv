@@ -27,7 +27,8 @@ void ReadMap()
 	file = fopen(mappath, "rb");
 	if (file == NULL)
 		error_exit("Map not found.. Abort\n");
-		else printf("Loading '%s'..", mappath);
+		else
+		printf("Loading '%s'..", mappath);
 
 	free(mappath);
 

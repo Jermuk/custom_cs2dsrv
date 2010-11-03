@@ -82,8 +82,10 @@ int OnRespawnRequest(int id, int writesocket)
 {
 	if (player[id].dead == 1)
 	{
-		if(player[id].money + mp_dmspawnmoney > 65000) player[id].money = 65000;
-		else player[id].money += mp_dmspawnmoney;
+		if (player[id].money + mp_dmspawnmoney > 65000)
+			player[id].money = 65000;
+		else
+			player[id].money += mp_dmspawnmoney;
 		return 0;
 	}
 	else
@@ -291,12 +293,13 @@ int OnFire(int id, int writesocket)
 					&& player[b].dead == 0 && playershit[b] == 0
 					&& player[id].team != player[b].team)
 			{
-				if (sqrt((player[b].buffer_x[frames] - startx)*(player[b].buffer_x[frames] - startx)
-						+ (player[b].buffer_y[frames] - starty)*(player[b].buffer_y[frames] - starty))
-						<= 16)
+				if (sqrt((player[b].buffer_x[frames] - startx)
+						* (player[b].buffer_x[frames] - startx)
+						+ (player[b].buffer_y[frames] - starty)
+								* (player[b].buffer_y[frames] - starty)) <= 16)
 				/*if (sqrt((player[b].x - startx) * (player[b].x - startx)
-						+ (player[b].y - starty) * (player[b].y - starty))
-						<= 16)*/
+				 + (player[b].y - starty) * (player[b].y - starty))
+				 <= 16)*/
 				{
 					OnHit(id, b, writesocket);
 					playershit[b] = 1;
@@ -578,4 +581,29 @@ int OnMoveAttempt(int id, unsigned short x, unsigned short y, int status,
 	 printf("(Debug) Tilemode: %d\n", map[newx][newy].mode);
 	 */
 	return 0;
+}
+
+/*
+ int OnDrop(int id, unsigned char wpnid, unsigned short ammo1, unsigned short ammo2, unsigned char unknown1, int writesocket)
+ Return Values:
+ 0 - OK
+ 1 - Don't drop
+ */
+int OnDrop(int id, unsigned char wpnid, unsigned short ammo1, unsigned short ammo2,
+		unsigned char unknown1, unsigned char unknown2, unsigned char unknown3, int writesocket)
+{
+	int i;
+	for (i = 0; i < 10; i++)
+	{
+		if (player[id].slot[i].id == wpnid)
+		{
+			if (player[id].slot[i].ammo1 == ammo1 && player[id].slot[i].ammo2
+					== ammo2)
+			{
+				return 0;
+			}
+			break;
+		}
+	}
+	return 1;
 }

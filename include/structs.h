@@ -52,6 +52,15 @@ struct PLAYER_WEAPON
  * 6 = Shotgun
  */
 
+struct DROPPED_WEAPON
+{
+	short id, uid;
+	short ammo1, ammo2;
+	short x, y;
+};
+struct DROPPED_WEAPON **dropped_weapons;
+extern int dropped_weapons_count;
+
 struct PLAYER
 {
 	int used;
@@ -70,7 +79,7 @@ struct PLAYER
 	unsigned short deaths;
 	short score;
 	unsigned short x, y;
-	unsigned short buffer_x[BUFFER_SIZE + 1], buffer_y[BUFFER_SIZE +1];
+	unsigned short buffer_x[BUFFER_SIZE + 1], buffer_y[BUFFER_SIZE + 1];
 	unsigned char health, armor;
 	unsigned char actualweapon;
 	struct PLAYER_WEAPON slot[10];

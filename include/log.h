@@ -38,7 +38,6 @@ void myprintf2(char *string, ...);
 #define eprintf(...) myprintf2(__VA_ARGS__)
 
 #endif // LOG_H_INCLUDED
-
 /*
  if(player[i].used == 1 && player[i].joinstatus >= 4 && i != id)
  {

@@ -738,3 +738,81 @@ void SendBuyFailedMessage(int id, int status, int writesocket)
 
 	free(buffer);
 }
+
+void SendDropMessage(int id, int wpnid, int ammo1, int ammo2, int unknown1,
+		int unknown2, int unknown3, int writesocket)
+{
+	/*
+	 int stringsize = 7;
+	 unsigned char *buffer = malloc(stringsize);
+	 if (buffer == NULL)
+	 error_exit("Memory error ( SendDropMessage() )\n");
+
+	 int position = 0;
+	 buffer[position] = 24;
+	 position++;
+	 buffer[position] = wpnid;
+	 position++;
+	 buffer[position] = (unsigned char) ammo1;
+	 position++;
+	 buffer[position] = 0;
+	 position++;
+	 buffer[position] = (unsigned char) ammo2;
+	 position++;
+	 buffer[position] = 0;
+	 position++;
+	 buffer[position] = 0;
+	 position++;
+	 SendToPlayer(buffer, stringsize, id, 1, writesocket);
+	 free(buffer);
+	 buffer = NULL;
+	 */
+
+	int stringsize = 19;
+	unsigned char *buffer = malloc(stringsize);
+	if (buffer == NULL)
+		error_exit("Memory error ( SendDropMessage() )\n");
+	unsigned short tilex = (unsigned short) player[id].x / 32;
+	unsigned short tiley = (unsigned short) player[id].y / 32;
+
+	int position = 0;
+
+	buffer[position] = 24;
+	position++;
+	buffer[position] = id;
+	position++;
+	buffer[position] = wpnid;
+	position++;
+	buffer[position] = (unsigned char) ammo1;
+	position++;
+	buffer[position] = unknown1;
+	position++;
+	buffer[position] = (unsigned char) ammo2;
+	position++;
+	buffer[position] = unknown2;
+	position++;
+	memcpy(buffer + position, &tilex, 2);
+	position += 2;
+	memcpy(buffer + position, &tiley, 2);
+	position += 2;
+	buffer[position] = 0;
+	position++;
+	buffer[position] = 0;
+	position++;
+	buffer[position] = 0;
+	position++;
+	buffer[position] = 1;
+	position++;
+	buffer[position] = 0;
+	position++;
+	buffer[position] = 0;
+	position++;
+	buffer[position] = 0;
+	position++;
+	buffer[position] = 50;
+	position++;
+
+	SendToAll(buffer, stringsize, 1, writesocket);
+
+	free(buffer);
+}

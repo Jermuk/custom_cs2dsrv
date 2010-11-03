@@ -159,6 +159,9 @@ int main()
 							case 23:
 								rtn = buy(message, tempsize, id, readsocket);
 								break;
+							case 24:
+								rtn = drop(message, tempsize, id, readsocket);
+								break;
 							case 28:
 								// Spray 28 - 0 - x x - y y - color
 								rtn = spray(message, tempsize, id, readsocket);
@@ -281,14 +284,11 @@ int main()
 			}
 
 		}
-		else
-		{
 #ifdef _WIN32
-			Sleep(fps + mstime - mtime());
+		Sleep(fps + mstime - mtime());
 #else
-			sleep(fps + mstime - mtime());
+		sleep(fps + mstime - mtime());
 #endif
-		}
 		mstime = mtime();
 	}
 	return EXIT_SUCCESS;
