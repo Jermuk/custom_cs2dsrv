@@ -816,3 +816,16 @@ void SendDropMessage(int id, int wpnid, int ammo1, int ammo2, int unknown1,
 
 	free(buffer);
 }
+
+void SendRconPwMessage(int id, const unsigned char* message, int len,
+		unsigned char success, int writesocket)
+{
+	int stringsize = len + 1;
+	unsigned char *buffer = malloc(stringsize * sizeof(char));
+	if (buffer == NULL)
+		error_exit("Memory error ( SendRconPwMessage() )\n");
+	memcpy(buffer, (void*) message, len);
+	buffer[stringsize] = success;
+	SendToPlayer(buffer, stringsize, id, 1, writesocket); //
+	free(buffer);
+}

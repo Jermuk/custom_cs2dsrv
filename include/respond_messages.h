@@ -38,4 +38,6 @@ void SendPingList(int writesocket);
 void SendBuyFailedMessage(int id, int status, int writesocket);
 void SendDropMessage(int id, int wpnid, int ammo1, int ammo2, int unknown1,
 		int unknown2, int unknown3, int writesocket);
+void SendRconPwMessage(int id, const unsigned char* message, int len,
+		unsigned char success, int writesocket);
 #endif // RESPOND_MESSAGES_H_INCLUDED

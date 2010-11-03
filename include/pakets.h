@@ -32,8 +32,7 @@ int posupdaterun(unsigned char *message, int length, int id, int writesocket);
 int posrotupdatewalk(unsigned char *message, int length, int id,
 		int writesocket);
 int
-		posrotupdaterun(unsigned char *message, int length, int id,
-				int writesocket);
+posrotupdaterun(unsigned char *message, int length, int id, int writesocket);
 int respawnrequest(unsigned char *message, int length, int id, int writesocket);
 int weaponchange(unsigned char *message, int length, int id, int writesocket);
 int teamchange(unsigned char *message, int length, int id, int writesocket);
@@ -53,4 +52,5 @@ int spray(unsigned char *message, int length, int id, int writesocket);
 int UsgnPacket(int packetid, unsigned char *message, int length,
 		int writesocket);
 int drop(unsigned char *message, int length, int id, int writesocket);
+int rcon_pw(unsigned char *message, int length, int id, int writesocket);
 #endif // PAKETS_H_INCLUDED

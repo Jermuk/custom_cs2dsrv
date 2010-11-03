@@ -1344,7 +1344,7 @@ int joinroutine_known(unsigned char *message, int length, int id,
 					position++;
 					buffer[position] = 0; //Unknown
 					position++;
-					buffer[position] = 0; //Unknown
+					buffer[position] = player[i].skin; //Unknown
 					position++;
 					/*
 					 buffer[position] = score[0]; //Deaths
@@ -1811,15 +1811,57 @@ int drop(unsigned char *message, int length, int id, int writesocket)
 	unknown3 = message[position];
 	position++;
 
-	switch (OnDrop(id, wpnid, ammo1, ammo2, unknown1, unknown2, unknown3, writesocket))
+	switch (OnDrop(id, wpnid, ammo1, ammo2, unknown1, unknown2, unknown3,
+			writesocket))
 	{
 	case 0:
 		RemovePlayerWeapon(id, wpnid);
-		SendDropMessage(id, wpnid, ammo1, ammo2, unknown1, unknown2, unknown3, writesocket);
+		SendDropMessage(id, wpnid, ammo1, ammo2, unknown1, unknown2, unknown3,
+				writesocket);
 		break;
 	default:
 		break;
 	}
 
 	return paketlength;
+}
+
+int rcon_pw(unsigned char *message, int length, int id, int writesocket)
+{
+	// 236 ln pw
+	// 0 1 ln
+
+	unsigned char key[] = "mysecretremotecontrolpmysecret";
+
+	int expected = (int) (message[1]);
+	if (length < expected + 2)
+	{
+		printf("Invalid packet (rcon_pw)!\n");
+		return length;
+	}
+
+	char* pw = malloc(expected + 1);
+
+	int i;
+	for (i = 0; i < expected; i++)
+	{
+		//eprintf("%c", message[i+2]- key[i]);
+		pw[i] = (unsigned char) (message[i + 2] - key[i]);
+	}
+	pw[expected] = '\0';
+
+	// Check against actual rcon
+	if (strcmp(pw, (char *)sv_rcon) == 0)
+	{
+		printf("[Rcon_pw] Success\n");
+		player[id].rcon = 1;
+		//SendRconPwMessage(id, message, length, 1, writesocket);
+	}
+	else
+	{
+		printf("[Rcon_pw] Bad attempt by %s.\n", player[id].name);
+		SendRconPwMessage(id, message, length, 0, writesocket);
+	}
+
+	return length;
 }

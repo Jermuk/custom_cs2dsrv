@@ -96,6 +96,7 @@ struct PLAYER
 
 	int firetimer, zoomtimer;
 	int zoommode;
+	int rcon;
 
 	/* Address*/
 	unsigned short port;

@@ -85,6 +85,7 @@ void ClearPlayer(int id)
 	player[id].reloadtimer = 0;
 	player[id].zoomtimer = 0;
 	player[id].firetimer = 0;
+	player[id].rcon = 0;
 
 	int i;
 	for (i = 0; i <= 9; i++)

@@ -16,6 +16,7 @@ int dropped_weapons_count = 0;
 
 unsigned char *sv_name = NULL;
 unsigned char *sv_map = NULL;
+unsigned char *sv_rcon = NULL;
 unsigned int sv_hostport = 0;
 unsigned short sv_maxplayers = 0;
 unsigned short sv_fps = 0;
@@ -157,6 +158,7 @@ void ReadCfg()
 	sv_friendlyfire = tointeger(GetValue("sv_friendlyfire", "0"));
 	sv_usgnonly = tointeger(GetValue("sv_usgnonly", "0"));
 	sv_password = (unsigned char *) GetValue("sv_password", "");
+	sv_rcon = (unsigned char *) GetValue("sv_rcon", "testing");
 	bot_count = tointeger(GetValue("bot_count", "0"));
 
 	mp_roundtime = tointeger(GetValue("mp_roundtime", "5"));
