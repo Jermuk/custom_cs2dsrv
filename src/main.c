@@ -39,7 +39,7 @@ int main()
 	 */
 	OnServerStart();
 	ReadMap();
-	UsgnRegister(readsocket);
+	//UsgnRegister(readsocket);
 
 	/**
 	 * \var needed for ExecuteFunctionsWithTime()

@@ -9,3 +9,6 @@ Release/src
 *.map
 *.cfg
 notices
+*.o
+custom_cs2dsrv.dev
+Makefile.win

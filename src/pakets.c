@@ -1212,7 +1212,7 @@ int joinroutine_known(unsigned char *message, int length, int id,
 
 			//----------- ServerData -----------
 
-			stringsize = 28 + u_strlen(sv_map) + u_strlen(sv_name);
+			stringsize = 28 + u_strlen(sv_map) + u_strlen(sv_name) + 11;
 			unsigned char *buffer = malloc(stringsize);
 			if (buffer == NULL)
 				error_exit("Memory error ( joinroutine_known() )\n");
@@ -1274,6 +1274,31 @@ int joinroutine_known(unsigned char *message, int length, int id,
 			position++;
 			buffer[position] = mp_infammo;
 			position++;
+
+			buffer[position] = 1; //01
+			position++;
+			buffer[position] = 8; //08
+			position++;
+			buffer[position] = 51; //33
+			position++;
+			buffer[position] = 58; //3A
+			position++;
+			buffer[position] = 11; //0B
+			position++;
+			buffer[position] = 22; //16
+			position++;
+			buffer[position] = 32; //20
+			position++;
+			buffer[position] = 35; //23
+			position++;
+			buffer[position] = 80; //50
+			position++;
+			buffer[position] = 73; //49
+			position++;
+			buffer[position] = 0; //00
+			position++;
+			
+			
 			buffer[position] = 3; //u_strlen ACK
 			position++;
 			buffer[position] = 65; //A
@@ -1282,7 +1307,14 @@ int joinroutine_known(unsigned char *message, int length, int id,
 			position++;
 			buffer[position] = 75; //K
 			position++;
+/*
+                                     0a 00 fc 06 00 07  ...c...>.7......
+0030   64 65 5f 64 75 73 74 06 53 65 72 76 65 72 00 00  de_dust.Server..
+0040   00 00 05 00 23 1e f3 03 00 01 00 06 01 01 00 00  ....#...........
+0050   00 01 08 33 3a 0b 16 20 23 50 49 00 03 41 43 4b  ...3:.. #PI..ACK
 
+
+*/
 			SendToPlayer(buffer, stringsize, id, 1, writesocket);
 			free(buffer);
 
@@ -1609,6 +1641,26 @@ int joinroutine_known(unsigned char *message, int length, int id,
 			buffer[position] = 7;
 			position++;
 			buffer[position] = 7; //third payload
+			position++;
+			buffer[position] = 0;
+			position++;
+
+			SendToPlayer(buffer, stringsize, id, 1, writesocket);
+			free(buffer);
+			
+			//----------- TweenData -----------
+			stringsize = 4;
+			buffer = malloc(stringsize);
+			if (buffer == NULL)
+				error_exit("Memory error ( joinroutine_known() )\n");
+
+			position = 0;
+
+			buffer[position] = 252;
+			position++;
+			buffer[position] = 7;
+			position++;
+			buffer[position] = 8; //third payload
 			position++;
 			buffer[position] = 0;
 			position++;
